@@ -1,0 +1,249 @@
+/* SusFarm - Styles */
+
+.susfarm-hud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid var(--color-green);
+  margin: 1rem 0;
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+
+.hud-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.susfarm-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1rem 0;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  background: rgba(0, 0, 0, 0.8);
+  color: var(--color-green);
+  border: 1px solid var(--color-green);
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+
+.tab-btn:hover {
+  background: rgba(0, 255, 0, 0.1);
+}
+
+.tab-btn.active {
+  background: var(--color-green);
+  color: var(--color-bg);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* Plots */
+.plots-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.plot-card {
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid var(--color-green);
+  padding: 1rem;
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+
+.plot-card.ready {
+  border-color: var(--color-pink);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.plot-header {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.plot-info {
+  margin: 0.5rem 0;
+  line-height: 1.6;
+}
+
+.plot-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.btn-small {
+  background: rgba(0, 0, 0, 0.8);
+  color: var(--color-green);
+  border: 1px solid var(--color-green);
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  font-family: monospace;
+  font-size: 0.8rem;
+}
+
+.btn-small:hover {
+  background: rgba(0, 255, 0, 0.1);
+}
+
+.btn-small:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-harvest {
+  background: var(--color-green);
+  color: var(--color-bg);
+  font-weight: bold;
+}
+
+.crop-select {
+  background: rgba(0, 0, 0, 0.8);
+  color: var(--color-green);
+  border: 1px solid var(--color-green);
+  padding: 0.25rem 0.5rem;
+  font-family: monospace;
+  font-size: 0.8rem;
+  flex: 1;
+  min-width: 150px;
+}
+
+/* Upgrades */
+.upgrade-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.upgrade-card {
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid var(--color-green);
+  padding: 1rem;
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+
+.upgrade-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.upgrade-info {
+  margin: 0.5rem 0;
+  line-height: 1.6;
+}
+
+/* Rites */
+.rites-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.rite-card {
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid var(--color-green);
+  padding: 1rem;
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+
+.rite-header {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.rite-info {
+  margin: 0.5rem 0;
+  line-height: 1.6;
+}
+
+/* Log */
+.log-container {
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid var(--color-green);
+  padding: 1rem;
+  font-family: monospace;
+  font-size: 0.85rem;
+  max-height: 400px;
+  overflow-y: auto;
+  margin: 1rem 0;
+}
+
+.log-entry {
+  margin: 0.25rem 0;
+  padding: 0.25rem;
+  border-bottom: 1px solid rgba(0, 255, 0, 0.2);
+}
+
+.log-entry:last-child {
+  border-bottom: none;
+}
+
+/* Dev Tools */
+.dev-tools {
+  background: rgba(255, 0, 0, 0.2);
+  border: 1px solid var(--color-red);
+  padding: 1rem;
+  margin: 1rem 0;
+  font-family: monospace;
+}
+
+.dev-tools button {
+  margin: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--color-red);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-family: monospace;
+}
+
+.dev-tools button:hover {
+  background: #cc0000;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .plots-container,
+  .upgrade-container,
+  .rites-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .susfarm-hud {
+    font-size: 0.8rem;
+  }
+  
+  .hud-item {
+    flex: 1 1 50%;
+  }
+}
+

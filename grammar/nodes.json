@@ -354,6 +354,15 @@
       "notes": ""
     },
     {
+      "key": "g.site.nav.susfarm",
+      "grammar": "[SITE::NAV::SUSFARM]",
+      "tags": [
+        "ui",
+        "site"
+      ],
+      "notes": ""
+    },
+    {
       "key": "g.site.suschurch.footer.seal",
       "grammar": "[SITE::SUSCHURCH::FOOTER::SEAL]",
       "tags": [
@@ -440,6 +449,1320 @@
       "tags": [
         "ui",
         "term"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.title",
+      "grammar": "[SUSFARM::TITLE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.desc",
+      "grammar": "[SUSFARM::DESC]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.cta.enter",
+      "grammar": "[SUSFARM::CTA::ENTER]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.hud.coin",
+      "grammar": "[SUSFARM::HUD::COIN]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.hud.plots",
+      "grammar": "[SUSFARM::HUD::PLOTS]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.hud.auto",
+      "grammar": "[SUSFARM::HUD::AUTO]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.hud.streak",
+      "grammar": "[SUSFARM::HUD::STREAK]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.hud.next_tick",
+      "grammar": "[SUSFARM::HUD::NEXT_TICK]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.hud.next_reward",
+      "grammar": "[SUSFARM::HUD::NEXT_REWARD]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.plot.title",
+      "grammar": "[SUSFARM::PLOT::TITLE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.plot.crop",
+      "grammar": "[SUSFARM::PLOT::CROP]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.plot.stage",
+      "grammar": "[SUSFARM::PLOT::STAGE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.plot.time",
+      "grammar": "[SUSFARM::PLOT::TIME]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.plot.yield",
+      "grammar": "[SUSFARM::PLOT::YIELD]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.plot.empty",
+      "grammar": "[SUSFARM::PLOT::EMPTY]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.stage.seed",
+      "grammar": "[SUSFARM::STAGE::SEED]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.stage.grow",
+      "grammar": "[SUSFARM::STAGE::GROW]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.stage.ready",
+      "grammar": "[SUSFARM::STAGE::READY]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.action.plant",
+      "grammar": "[SUSFARM::ACTION::PLANT]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.action.water",
+      "grammar": "[SUSFARM::ACTION::WATER]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.action.boost",
+      "grammar": "[SUSFARM::ACTION::BOOST]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.action.harvest",
+      "grammar": "[SUSFARM::ACTION::HARVEST]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.tab.plant",
+      "grammar": "[SUSFARM::TAB::PLANT]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.tab.upgrade",
+      "grammar": "[SUSFARM::TAB::UPGRADE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.tab.market",
+      "grammar": "[SUSFARM::TAB::MARKET]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.tab.rites",
+      "grammar": "[SUSFARM::TAB::RITES]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.tab.log",
+      "grammar": "[SUSFARM::TAB::LOG]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.crop.lungroot",
+      "grammar": "[SUSFARM::CROP::LUNGROOT]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.crop.heartbean",
+      "grammar": "[SUSFARM::CROP::HEARTBEAN]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.crop.brainmint",
+      "grammar": "[SUSFARM::CROP::BRAINMINT]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.crop.bonegrain",
+      "grammar": "[SUSFARM::CROP::BONEGRAIN]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.crop.bloodberry",
+      "grammar": "[SUSFARM::CROP::BLOODBERRY]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.crop.eyeseed",
+      "grammar": "[SUSFARM::CROP::EYESEED]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.upgrade.land",
+      "grammar": "[SUSFARM::UPGRADE::LAND]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.upgrade.auto",
+      "grammar": "[SUSFARM::UPGRADE::AUTO]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.upgrade.ritual",
+      "grammar": "[SUSFARM::UPGRADE::RITUAL]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.upgrade.cost",
+      "grammar": "[SUSFARM::UPGRADE::COST]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.upgrade.effect",
+      "grammar": "[SUSFARM::UPGRADE::EFFECT]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.upgrade.buy",
+      "grammar": "[SUSFARM::UPGRADE::BUY]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.upgrade.maxed",
+      "grammar": "[SUSFARM::UPGRADE::MAXED]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.upgrade.effect.autoHarvest",
+      "grammar": "[SUSFARM::UPGRADE::EFFECT::AUTOHARVEST]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.upgrade.effect.autoReplant",
+      "grammar": "[SUSFARM::UPGRADE::EFFECT::AUTOREPLANT]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.upgrade.effect.autoWater",
+      "grammar": "[SUSFARM::UPGRADE::EFFECT::AUTOWATER]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.upgrade.effect.buff",
+      "grammar": "[SUSFARM::UPGRADE::EFFECT::BUFF]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.rite.baptism",
+      "grammar": "[SUSFARM::RITE::BAPTISM]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.rite.baptism.desc",
+      "grammar": "[SUSFARM::RITE::BAPTISM::DESC]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.rite.cost",
+      "grammar": "[SUSFARM::RITE::COST]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.rite.activate",
+      "grammar": "[SUSFARM::RITE::ACTIVATE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.log.planted",
+      "grammar": "[SUSFARM::LOG::PLANTED]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.log.harvested",
+      "grammar": "[SUSFARM::LOG::HARVESTED]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.log.withered",
+      "grammar": "[SUSFARM::LOG::WITHERED]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.log.blessed",
+      "grammar": "[SUSFARM::LOG::BLESSED]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.log.double",
+      "grammar": "[SUSFARM::LOG::DOUBLE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.log.empty",
+      "grammar": "[SUSFARM::LOG::EMPTY]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.placeholder",
+      "grammar": "[SUSFARM::MARKET::PLACEHOLDER]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.daily.title",
+      "grammar": "[SUSFARM::DAILY::TITLE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.daily.done",
+      "grammar": "[SUSFARM::DAILY::DONE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.daily.reward",
+      "grammar": "[SUSFARM::DAILY::REWARD]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.title",
+      "grammar": "[SUSFARM::MARKET::TITLE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.desc",
+      "grammar": "[SUSFARM::MARKET::DESC]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.hud.goods",
+      "grammar": "[SUSFARM::MARKET::HUD::GOODS]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.hud.volatility",
+      "grammar": "[SUSFARM::MARKET::HUD::VOLATILITY]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.hud.refresh",
+      "grammar": "[SUSFARM::MARKET::HUD::REFRESH]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.hud.mood",
+      "grammar": "[SUSFARM::MARKET::HUD::MOOD]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.hud.event",
+      "grammar": "[SUSFARM::MARKET::HUD::EVENT]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.hud.event_none",
+      "grammar": "[SUSFARM::MARKET::HUD::EVENT_NONE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.hud.event_ends_in",
+      "grammar": "[SUSFARM::MARKET::HUD::EVENT_ENDS_IN]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.owned",
+      "grammar": "[SUSFARM::MARKET::OWNED]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.price",
+      "grammar": "[SUSFARM::MARKET::PRICE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.action.sell_one",
+      "grammar": "[SUSFARM::MARKET::ACTION::SELL_ONE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.action.sell_all",
+      "grammar": "[SUSFARM::MARKET::ACTION::SELL_ALL]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.mood.calm",
+      "grammar": "[SUSFARM::MARKET::MOOD::CALM]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.mood.hot",
+      "grammar": "[SUSFARM::MARKET::MOOD::HOT]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.mood.panic",
+      "grammar": "[SUSFARM::MARKET::MOOD::PANIC]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.mood.sacred",
+      "grammar": "[SUSFARM::MARKET::MOOD::SACRED]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.mood.corrupted",
+      "grammar": "[SUSFARM::MARKET::MOOD::CORRUPTED]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.event.surge.headline",
+      "grammar": "[SUSFARM::MARKET::EVENT::SURGE::HEADLINE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.event.surge.body",
+      "grammar": "[SUSFARM::MARKET::EVENT::SURGE::BODY]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.event.crash.headline",
+      "grammar": "[SUSFARM::MARKET::EVENT::CRASH::HEADLINE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.event.crash.body",
+      "grammar": "[SUSFARM::MARKET::EVENT::CRASH::BODY]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.goods.lung_chunk",
+      "grammar": "[SUSFARM::GOODS::LUNG_CHUNK]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.goods.heart_pulse",
+      "grammar": "[SUSFARM::GOODS::HEART_PULSE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.goods.brain_dust",
+      "grammar": "[SUSFARM::GOODS::BRAIN_DUST]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.goods.bone_shard",
+      "grammar": "[SUSFARM::GOODS::BONE_SHARD]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.goods.blood_drop",
+      "grammar": "[SUSFARM::GOODS::BLOOD_DROP]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.goods.eye_fragment",
+      "grammar": "[SUSFARM::GOODS::EYE_FRAGMENT]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.consume.title",
+      "grammar": "[SUSFARM::CONSUME::TITLE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.consume.cta",
+      "grammar": "[SUSFARM::CONSUME::CTA]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.buff.heart_surge.name",
+      "grammar": "[SUSFARM::BUFF::HEART_SURGE::NAME]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.anomaly.blessing_overflow.headline",
+      "grammar": "[SUSFARM::ANOMALY::BLESSING_OVERFLOW::HEADLINE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.suschurch.credit.title",
+      "grammar": "[SUSCHURCH::CREDIT::TITLE]",
+      "tags": [
+        "ui",
+        "church"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.suschurch.credit.desc",
+      "grammar": "[SUSCHURCH::CREDIT::DESC]",
+      "tags": [
+        "ui",
+        "church"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.suschurch.tithe.rate",
+      "grammar": "[SUSCHURCH::TITHE::RATE]",
+      "tags": [
+        "ui",
+        "church"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.action.sell",
+      "grammar": "[SUSFARM::MARKET::ACTION::SELL]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.action.hold",
+      "grammar": "[SUSFARM::MARKET::ACTION::HOLD]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.no_goods",
+      "grammar": "[SUSFARM::MARKET::NO_GOODS]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.log.title",
+      "grammar": "[SUSFARM::MARKET::LOG::TITLE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.log.empty",
+      "grammar": "[SUSFARM::MARKET::LOG::EMPTY]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.log.sold",
+      "grammar": "[SUSFARM::MARKET::LOG::SOLD]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.log.surge",
+      "grammar": "[SUSFARM::MARKET::LOG::SURGE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.log.crash",
+      "grammar": "[SUSFARM::MARKET::LOG::CRASH]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.log.ritual",
+      "grammar": "[SUSFARM::MARKET::LOG::RITUAL]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.log.insider",
+      "grammar": "[SUSFARM::MARKET::LOG::INSIDER]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.log.anomaly",
+      "grammar": "[SUSFARM::MARKET::LOG::ANOMALY]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.goods.relic_seed",
+      "grammar": "[SUSFARM::GOODS::RELIC_SEED]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.goods.omen_token",
+      "grammar": "[SUSFARM::GOODS::OMEN_TOKEN]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.consume.cooldown",
+      "grammar": "[SUSFARM::CONSUME::COOLDOWN]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.consume.overeat",
+      "grammar": "[SUSFARM::CONSUME::OVEREAT]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.meta.fullness",
+      "grammar": "[SUSFARM::META::FULLNESS]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.meta.purity",
+      "grammar": "[SUSFARM::META::PURITY]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.meta.corruption",
+      "grammar": "[SUSFARM::META::CORRUPTION]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.meta.anomaly_pressure",
+      "grammar": "[SUSFARM::META::ANOMALY_PRESSURE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.buff.heart_surge.desc",
+      "grammar": "[SUSFARM::BUFF::HEART_SURGE::DESC]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.buff.brain_bloom.name",
+      "grammar": "[SUSFARM::BUFF::BRAIN_BLOOM::NAME]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.buff.brain_bloom.desc",
+      "grammar": "[SUSFARM::BUFF::BRAIN_BLOOM::DESC]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.buff.lung_calm.name",
+      "grammar": "[SUSFARM::BUFF::LUNG_CALM::NAME]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.buff.lung_calm.desc",
+      "grammar": "[SUSFARM::BUFF::LUNG_CALM::DESC]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.buff.blood_debt.name",
+      "grammar": "[SUSFARM::BUFF::BLOOD_DEBT::NAME]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.buff.blood_debt.desc",
+      "grammar": "[SUSFARM::BUFF::BLOOD_DEBT::DESC]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.buff.womb_reactor.name",
+      "grammar": "[SUSFARM::BUFF::WOMB_REACTOR::NAME]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.buff.womb_reactor.desc",
+      "grammar": "[SUSFARM::BUFF::WOMB_REACTOR::DESC]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.buff.overeat.name",
+      "grammar": "[SUSFARM::BUFF::OVEREAT::NAME]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.buff.overeat.desc",
+      "grammar": "[SUSFARM::BUFF::OVEREAT::DESC]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.anomaly.blessing_overflow.body",
+      "grammar": "[SUSFARM::ANOMALY::BLESSING_OVERFLOW::BODY]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.anomaly.corruption_bloom.headline",
+      "grammar": "[SUSFARM::ANOMALY::CORRUPTION_BLOOM::HEADLINE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.anomaly.corruption_bloom.body",
+      "grammar": "[SUSFARM::ANOMALY::CORRUPTION_BLOOM::BODY]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.anomaly.inverse_mercy.headline",
+      "grammar": "[SUSFARM::ANOMALY::INVERSE_MERCY::HEADLINE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.anomaly.inverse_mercy.body",
+      "grammar": "[SUSFARM::ANOMALY::INVERSE_MERCY::BODY]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.anomaly.nullfield_freeze.headline",
+      "grammar": "[SUSFARM::ANOMALY::NULLFIELD_FREEZE::HEADLINE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.anomaly.nullfield_freeze.body",
+      "grammar": "[SUSFARM::ANOMALY::NULLFIELD_FREEZE::BODY]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.anomaly.relic_gravity.headline",
+      "grammar": "[SUSFARM::ANOMALY::RELIC_GRAVITY::HEADLINE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.anomaly.relic_gravity.body",
+      "grammar": "[SUSFARM::ANOMALY::RELIC_GRAVITY::BODY]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.anomaly.glitch_harvest.headline",
+      "grammar": "[SUSFARM::ANOMALY::GLITCH_HARVEST::HEADLINE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.anomaly.glitch_harvest.body",
+      "grammar": "[SUSFARM::ANOMALY::GLITCH_HARVEST::BODY]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.event.ritual_echo.headline",
+      "grammar": "[SUSFARM::MARKET::EVENT::RITUAL_ECHO::HEADLINE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.event.ritual_echo.body",
+      "grammar": "[SUSFARM::MARKET::EVENT::RITUAL_ECHO::BODY]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.event.omen_leak.headline",
+      "grammar": "[SUSFARM::MARKET::EVENT::OMEN_LEAK::HEADLINE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.event.omen_leak.body",
+      "grammar": "[SUSFARM::MARKET::EVENT::OMEN_LEAK::BODY]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.event.insider_tip.headline",
+      "grammar": "[SUSFARM::MARKET::EVENT::INSIDER_TIP::HEADLINE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.event.insider_tip.body",
+      "grammar": "[SUSFARM::MARKET::EVENT::INSIDER_TIP::BODY]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.event.freeze.headline",
+      "grammar": "[SUSFARM::MARKET::EVENT::FREEZE::HEADLINE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.event.freeze.body",
+      "grammar": "[SUSFARM::MARKET::EVENT::FREEZE::BODY]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.event.manipulation.headline",
+      "grammar": "[SUSFARM::MARKET::EVENT::MANIPULATION::HEADLINE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.event.manipulation.body",
+      "grammar": "[SUSFARM::MARKET::EVENT::MANIPULATION::BODY]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.event.relic_listing.headline",
+      "grammar": "[SUSFARM::MARKET::EVENT::RELIC_LISTING::HEADLINE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.market.event.relic_listing.body",
+      "grammar": "[SUSFARM::MARKET::EVENT::RELIC_LISTING::BODY]",
+      "tags": [
+        "ui",
+        "susfarm"
       ],
       "notes": ""
     }

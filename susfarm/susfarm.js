@@ -1,0 +1,607 @@
+// SusFarm - UI Rendering and Interaction
+
+const MARKET_REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes
+
+let currentTab = 'plots';
+
+// Format time as MM:SS
+function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+}
+
+// Format number with commas
+function formatNumber(num) {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+// Get translation
+function t(key, vars = {}) {
+  if (!window.t) return key;
+  let str = window.t(key, window.currentLang || 'en');
+  if (vars && Object.keys(vars).length > 0) {
+    str = str.replace(/\{(\w+)\}/g, (match, k) => vars[k] !== undefined ? vars[k] : match);
+  }
+  return str;
+}
+
+// Update HUD
+function updateHUD() {
+  const state = window.SUSFARM_STATE?.getState();
+  if (!state) return;
+  
+  const coin = window.SUS_WALLET?.get() || 0;
+  const usedPlots = state.plots.filter(p => p && p.cropKey).length;
+  const autoLevel = state.upgrades.automation || 0;
+  const streak = state.streak || 0;
+  
+  // Next tick countdown
+  const now = Date.now();
+  const lastTick = state.lastTickAt || now;
+  const nextTickMs = 60 * 1000 - (now - lastTick);
+  const nextTickSec = Math.max(0, Math.floor(nextTickMs / 1000));
+  
+  // Next reward
+  const nextReward = window.SUSFARM_STATE?.getNextReward();
+  let rewardText = '-';
+  if (nextReward) {
+    rewardText = `~${formatTime(nextReward.time)} → +${nextReward.yield}💰`;
+  }
+  
+  const hudCoin = document.getElementById('hudCoin');
+  if (hudCoin) hudCoin.textContent = formatNumber(coin);
+  
+  const hudPlots = document.getElementById('hudPlots');
+  if (hudPlots) hudPlots.textContent = `${usedPlots}/${state.maxPlots}`;
+  
+  const hudAuto = document.getElementById('hudAuto');
+  if (hudAuto) hudAuto.textContent = `Lv${autoLevel}`;
+  
+  const hudStreak = document.getElementById('hudStreak');
+  if (hudStreak) hudStreak.textContent = streak;
+  
+  const hudNextTick = document.getElementById('hudNextTick');
+  if (hudNextTick) hudNextTick.textContent = formatTime(nextTickSec);
+  
+  const hudNextReward = document.getElementById('hudNextReward');
+  if (hudNextReward) hudNextReward.textContent = rewardText;
+}
+
+// Render plots
+function renderPlots() {
+  const container = document.getElementById('plotsContainer');
+  if (!container) return;
+  
+  const state = window.SUSFARM_STATE?.getState();
+  if (!state) return;
+  
+  container.innerHTML = '';
+  
+  // Ensure we have enough plots
+  while (state.plots.length < state.maxPlots) {
+    state.plots.push({
+      id: state.plots.length,
+      cropKey: null,
+      plantedAt: 0,
+      remainingSeconds: 0,
+      stage: 'empty',
+      lastTickAt: 0
+    });
+  }
+  
+  state.plots.forEach((plot, index) => {
+    const plotDiv = document.createElement('div');
+    plotDiv.className = 'plot-card';
+    if (plot.stage === 'ready') plotDiv.classList.add('ready');
+    
+    const crop = plot.cropKey ? window.SUSFARM_DATA?.crops[plot.cropKey] : null;
+    
+    let html = `<div class="plot-header">
+      <strong>${t('g.susfarm.plot.title')} #${plot.id + 1}</strong>
+    </div>`;
+    
+    if (crop) {
+      const cropName = t(crop.nameKey);
+      const stageKey = `g.susfarm.stage.${plot.stage}`;
+      const stageName = t(stageKey);
+      
+      let yieldAmount = crop.baseYield;
+      const state = window.SUSFARM_STATE?.getState();
+      if (state && state.buffs.yieldPercent > 0) {
+        yieldAmount = Math.floor(yieldAmount * (1 + state.buffs.yieldPercent / 100));
+      }
+      
+      html += `
+        <div class="plot-info">
+          <div><strong>${t('g.susfarm.plot.crop')}:</strong> ${cropName}</div>
+          <div><strong>${t('g.susfarm.plot.stage')}:</strong> ${stageName}</div>
+          <div><strong>${t('g.susfarm.plot.time')}:</strong> ${formatTime(plot.remainingSeconds)}</div>
+          <div><strong>${t('g.susfarm.plot.yield')}:</strong> +${yieldAmount} 💰</div>
+        </div>
+        <div class="plot-actions">
+      `;
+      
+      if (plot.stage !== 'ready') {
+        html += `
+          <button class="btn-small" onclick="window.waterPlot(${index})">${t('g.susfarm.action.water')} 5💰</button>
+          <button class="btn-small" onclick="window.boostPlot(${index})">${t('g.susfarm.action.boost')} 20💰</button>
+        `;
+      }
+      
+      if (plot.stage === 'ready') {
+        html += `<button class="btn-small btn-harvest" onclick="window.harvestPlot(${index})">${t('g.susfarm.action.harvest')}</button>`;
+      }
+      
+      html += `</div>`;
+    } else {
+      // Empty plot - show plant options
+      html += `
+        <div class="plot-info">
+          <div>${t('g.susfarm.plot.empty')}</div>
+        </div>
+        <div class="plot-actions">
+          <select id="cropSelect${index}" class="crop-select">
+      `;
+      
+      Object.values(window.SUSFARM_DATA?.crops || {}).forEach(crop => {
+        const cropName = t(crop.nameKey);
+        html += `<option value="${crop.key}">${crop.emoji} ${cropName} (${crop.seedCost}💰)</option>`;
+      });
+      
+      html += `
+          </select>
+          <button class="btn-small" onclick="window.plantPlot(${index})">${t('g.susfarm.action.plant')}</button>
+        </div>
+      `;
+    }
+    
+    plotDiv.innerHTML = html;
+    container.appendChild(plotDiv);
+  });
+}
+
+// Render upgrades
+function renderUpgrades() {
+  const container = document.getElementById('upgradeContainer');
+  if (!container) return;
+  
+  const state = window.SUSFARM_STATE?.getState();
+  if (!state) return;
+  
+  container.innerHTML = '';
+  
+  Object.values(window.SUSFARM_DATA?.upgrades || {}).forEach(upgrade => {
+    const currentLevel = state.upgrades[upgrade.key] || 0;
+    const canUpgrade = currentLevel < upgrade.maxLevel;
+    const cost = canUpgrade ? upgrade.costs[currentLevel] : null;
+    const coin = window.SUS_WALLET?.get() || 0;
+    const canAfford = cost && coin >= cost;
+    
+    const upgradeDiv = document.createElement('div');
+    upgradeDiv.className = 'upgrade-card';
+    
+    const effect = upgrade.effect(currentLevel + 1);
+    let effectText = '';
+    if (effect.plots) effectText = `+${effect.plots} ${t('g.susfarm.hud.plots')}`;
+    if (effect.autoHarvest) effectText = t('g.susfarm.upgrade.effect.autoHarvest');
+    if (effect.autoReplant) effectText = t('g.susfarm.upgrade.effect.autoReplant');
+    if (effect.autoWater) effectText = t('g.susfarm.upgrade.effect.autoWater');
+    if (effect.buffDuration) effectText = `${Math.floor(effect.buffDuration / 60)}min ${t('g.susfarm.upgrade.effect.buff')}`;
+    
+    upgradeDiv.innerHTML = `
+      <div class="upgrade-header">
+        <strong>${t(upgrade.nameKey)}</strong>
+        <span>Lv${currentLevel}/${upgrade.maxLevel}</span>
+      </div>
+      <div class="upgrade-info">
+        ${canUpgrade ? `
+          <div>${t('g.susfarm.upgrade.cost')}: ${formatNumber(cost)}💰</div>
+          <div>${t('g.susfarm.upgrade.effect')}: ${effectText}</div>
+        ` : `<div>${t('g.susfarm.upgrade.maxed')}</div>`}
+      </div>
+      ${canUpgrade ? `
+        <button class="btn" onclick="window.buyUpgrade('${upgrade.key}')" ${!canAfford ? 'disabled' : ''}>
+          ${t('g.susfarm.upgrade.buy')}
+        </button>
+      ` : ''}
+    `;
+    
+    container.appendChild(upgradeDiv);
+  });
+}
+
+// Render rites
+function renderRites() {
+  const container = document.getElementById('ritesContainer');
+  if (!container) return;
+  
+  container.innerHTML = '';
+  
+  Object.values(window.SUSFARM_DATA?.rites || {}).forEach(rite => {
+    const coin = window.SUS_WALLET?.get() || 0;
+    const canAfford = coin >= rite.cost;
+    
+    const riteDiv = document.createElement('div');
+    riteDiv.className = 'rite-card';
+    
+    riteDiv.innerHTML = `
+      <div class="rite-header">
+        <strong>${t(rite.nameKey)}</strong>
+      </div>
+      <div class="rite-info">
+        <div>${t(rite.descKey)}</div>
+        <div>${t('g.susfarm.rite.cost')}: ${rite.cost}💰</div>
+      </div>
+      <button class="btn" onclick="window.activateRite('${rite.key}')" ${!canAfford ? 'disabled' : ''}>
+        ${t('g.susfarm.rite.activate')}
+      </button>
+    `;
+    
+    container.appendChild(riteDiv);
+  });
+}
+
+// Render log
+function renderLog() {
+  const container = document.getElementById('logContainer');
+  if (!container) return;
+  
+  const state = window.SUSFARM_STATE?.getState();
+  if (!state) return;
+  
+  container.innerHTML = '';
+  
+  if (state.log.length === 0) {
+    container.innerHTML = '<p>' + t('g.susfarm.log.empty') + '</p>';
+    return;
+  }
+  
+  state.log.forEach(entry => {
+    const logDiv = document.createElement('div');
+    logDiv.className = 'log-entry';
+    
+    const date = new Date(entry.timestamp).toLocaleTimeString();
+    let text = '';
+    
+    switch (entry.type) {
+      case 'planted':
+        text = `${entry.data.crop} ${t('g.susfarm.log.planted')} ${t('g.susfarm.plot.title')} #${entry.data.plotId + 1}`;
+        break;
+      case 'harvested':
+        const critText = entry.data.isCrit ? ` ${t('g.susfarm.log.double')}!` : '';
+        const autoText = entry.data.isAuto ? ' [AUTO]' : '';
+        text = `${entry.data.crop} ${t('g.susfarm.log.harvested')} +${entry.data.yield}💰${critText}${autoText}`;
+        break;
+      case 'withered':
+        text = `${entry.data.crop} ${t('g.susfarm.log.withered')} ${t('g.susfarm.plot.title')} #${entry.data.plotId + 1}`;
+        break;
+      case 'blessed':
+        text = `✨ ${t('g.susfarm.log.blessed')}`;
+        break;
+      default:
+        text = JSON.stringify(entry.data);
+    }
+    
+    logDiv.textContent = `[${date}] ${text}`;
+    container.appendChild(logDiv);
+  });
+}
+
+// Render market
+function renderMarket() {
+  const container = document.getElementById('tabMarket');
+  if (!container) return;
+  
+  const state = window.SUSFARM_STATE?.getState();
+  if (!state) return;
+  
+  container.innerHTML = '';
+  
+  // Market HUD
+  const marketHud = document.createElement('div');
+  marketHud.className = 'susfarm-hud';
+  marketHud.innerHTML = `
+    <div class="hud-item">
+      <span>🏪</span>
+      <span data-i18n="g.susfarm.market.title">Market</span>
+    </div>
+    <div class="hud-item">
+      <span>📦</span>
+      <span data-i18n="g.susfarm.market.hud.goods">Goods</span>: <span id="marketGoodsCount">0</span>
+    </div>
+    <div class="hud-item">
+      <span>📈</span>
+      <span data-i18n="g.susfarm.market.hud.volatility">Volatility</span>: <span id="marketVolatility">-</span>
+    </div>
+    <div class="hud-item">
+      <span>⏳</span>
+      <span data-i18n="g.susfarm.market.hud.refresh">Price refresh</span>: <span id="marketRefresh">00:00</span>
+    </div>
+    <div class="hud-item">
+      <span>🧭</span>
+      <span data-i18n="g.susfarm.market.hud.mood">Mood</span>: <span id="marketMood">-</span>
+    </div>
+    <div class="hud-item">
+      <span>🗞️</span>
+      <span data-i18n="g.susfarm.market.hud.event">Event</span>: <span id="marketEvent">-</span>
+    </div>
+  `;
+  container.appendChild(marketHud);
+  
+  // Update HUD values
+  const totalGoods = Object.values(state.inventory || {}).reduce((a, b) => a + b, 0);
+  const volatility = state.market.mood === 'hot' || state.market.mood === 'panic' ? 'High' : 
+                     state.market.mood === 'calm' ? 'Low' : 'Medium';
+  const now = Date.now();
+  const nextRefresh = MARKET_REFRESH_INTERVAL - (now % MARKET_REFRESH_INTERVAL);
+  const moodKey = `g.susfarm.market.mood.${state.market.mood || 'calm'}`;
+  const event = state.market.activeEvent;
+  const eventText = event ? t(event.headlineKey) : t('g.susfarm.market.hud.event_none');
+  
+  document.getElementById('marketGoodsCount').textContent = totalGoods;
+  document.getElementById('marketVolatility').textContent = volatility;
+  document.getElementById('marketRefresh').textContent = formatTime(Math.floor(nextRefresh / 1000));
+  document.getElementById('marketMood').textContent = t(moodKey);
+  document.getElementById('marketEvent').textContent = eventText;
+  
+  // Goods list
+  const goodsList = document.createElement('div');
+  goodsList.className = 'market-goods-list';
+  
+  const goods = window.SUSFARM_DATA?.goods || {};
+  Object.keys(goods).forEach(key => {
+    const good = goods[key];
+    const owned = state.inventory[key] || 0;
+    const price = state.market.prices[key] || good.basePrice;
+    const lastPrice = state.market.lastPrices[key] || price;
+    const change = lastPrice > 0 ? ((price - lastPrice) / lastPrice * 100).toFixed(0) : 0;
+    const changeText = change > 0 ? `(▲ +${change}%)` : change < 0 ? `(▼ ${change}%)` : '';
+    const isRare = good.rarity === 'rare' || good.rarity === 'legendary';
+    
+    const goodDiv = document.createElement('div');
+    goodDiv.className = 'market-good-card';
+    
+    goodDiv.innerHTML = `
+      <div class="good-header">
+        <strong>${good.emoji} ${t(good.nameKey)}</strong>
+        ${isRare ? '<span class="rare-badge">RARE</span>' : ''}
+      </div>
+      <div class="good-info">
+        <div><strong>${t('g.susfarm.market.owned')}:</strong> ${owned}</div>
+        <div><strong>${t('g.susfarm.market.price')}:</strong> ${price} 💰 ${changeText}</div>
+        ${good.edible ? `<div><strong>${t('g.susfarm.consume.title')}:</strong> ${t('g.susfarm.consume.cta')}</div>` : ''}
+      </div>
+      <div class="good-actions">
+        ${owned > 0 ? `
+          ${good.basePrice > 0 ? `
+            <button class="btn-small" onclick="window.sellGoods('${key}', 1)">${t('g.susfarm.market.action.sell_one')}</button>
+            <button class="btn-small" onclick="window.sellGoods('${key}', ${owned})">${t('g.susfarm.market.action.sell_all')}</button>
+          ` : ''}
+          ${good.edible ? `<button class="btn-small" onclick="window.consumeGoods('${key}', 1)">${t('g.susfarm.consume.cta')}</button>` : ''}
+        ` : '<div class="good-empty">' + t('g.susfarm.market.no_goods') + '</div>'}
+      </div>
+    `;
+    
+    goodsList.appendChild(goodDiv);
+  });
+  
+  container.appendChild(goodsList);
+  
+  // Market log
+  const logDiv = document.createElement('div');
+  logDiv.className = 'market-log';
+  logDiv.innerHTML = '<h4>' + t('g.susfarm.market.log.title') + '</h4>';
+  const logContainer = document.createElement('div');
+  logContainer.className = 'log-container';
+  
+  if (state.market.log.length === 0) {
+    logContainer.innerHTML = '<p>' + t('g.susfarm.market.log.empty') + '</p>';
+  } else {
+    state.market.log.forEach(entry => {
+      const logEntry = document.createElement('div');
+      logEntry.className = 'log-entry';
+      const date = new Date(entry.timestamp).toLocaleTimeString();
+      let text = '';
+      
+      switch (entry.type) {
+        case 'sold':
+          text = `${t('g.susfarm.market.log.sold')} ${entry.data.count} × ${t(window.SUSFARM_DATA?.goods[entry.data.good]?.nameKey || '')} for ${entry.data.profit} 💰`;
+          break;
+        case 'event':
+          text = `${t('g.susfarm.market.log.surge')}: ${entry.data.event}`;
+          break;
+        case 'insider_boost':
+          text = `${t('g.susfarm.market.log.insider')}: ${entry.data.good}`;
+          break;
+        case 'anomaly':
+          text = `${t('g.susfarm.market.log.anomaly')}: ${entry.data.id}`;
+          break;
+        default:
+          text = JSON.stringify(entry.data);
+      }
+      
+      logEntry.textContent = `[${date}] ${text}`;
+      logContainer.appendChild(logEntry);
+    });
+  }
+  
+  logDiv.appendChild(logContainer);
+  container.appendChild(logDiv);
+}
+
+// Update all UI
+function updateSusFarmUI() {
+  updateHUD();
+  
+  if (currentTab === 'plots') renderPlots();
+  else if (currentTab === 'upgrade') renderUpgrades();
+  else if (currentTab === 'market') renderMarket();
+  else if (currentTab === 'rites') renderRites();
+  else if (currentTab === 'log') renderLog();
+}
+
+// Tab switching
+function switchTab(tab) {
+  currentTab = tab;
+  
+  // Update tab buttons
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.dataset.tab === tab) btn.classList.add('active');
+  });
+  
+  // Update tab content
+  document.querySelectorAll('.tab-content').forEach(content => {
+    content.classList.remove('active');
+    if (content.id === `tab${tab.charAt(0).toUpperCase() + tab.slice(1)}`) {
+      content.classList.add('active');
+    }
+  });
+  
+  updateSusFarmUI();
+}
+
+// Action handlers
+window.plantPlot = function(plotIndex) {
+  const select = document.getElementById(`cropSelect${plotIndex}`);
+  if (!select) return;
+  const cropKey = select.value;
+  if (window.SUSFARM_STATE?.plantCrop(plotIndex, cropKey)) {
+    updateSusFarmUI();
+  } else {
+    alert('Failed to plant. Check if you have enough coins.');
+  }
+};
+
+window.waterPlot = function(plotIndex) {
+  if (window.SUSFARM_STATE?.waterPlot(plotIndex)) {
+    updateSusFarmUI();
+  } else {
+    alert('Failed to water. Check if you have enough coins.');
+  }
+};
+
+window.boostPlot = function(plotIndex) {
+  if (window.SUSFARM_STATE?.boostPlot(plotIndex)) {
+    updateSusFarmUI();
+  } else {
+    alert('Failed to boost. Check if you have enough coins.');
+  }
+};
+
+window.harvestPlot = function(plotIndex) {
+  if (window.SUSFARM_STATE?.harvestPlot(plotIndex)) {
+    updateSusFarmUI();
+  }
+};
+
+window.buyUpgrade = function(upgradeKey) {
+  if (window.SUSFARM_STATE?.buyUpgrade(upgradeKey)) {
+    updateSusFarmUI();
+  } else {
+    alert('Failed to buy upgrade. Check if you have enough coins.');
+  }
+};
+
+window.activateRite = function(riteKey) {
+  if (window.SUSFARM_STATE?.activateRite(riteKey)) {
+    // Trigger ritual echo
+    window.SUSFARM_STATE?.triggerRitualEcho();
+    updateSusFarmUI();
+  } else {
+    alert('Failed to activate rite. Check if you have enough coins.');
+  }
+};
+
+window.sellGoods = function(goodsKey, count) {
+  if (window.SUSFARM_STATE?.sellGoods(goodsKey, count)) {
+    updateSusFarmUI();
+  } else {
+    alert('Failed to sell goods.');
+  }
+};
+
+window.consumeGoods = function(goodsKey, count) {
+  if (window.SUSFARM_STATE?.consumeGoods(goodsKey, count)) {
+    updateSusFarmUI();
+  } else {
+    alert('Failed to consume. Check cooldown or inventory.');
+  }
+};
+
+// Dev tools
+window.SUSFARM_DEV = {
+  addCoin: (amount) => {
+    window.SUS_WALLET?.add(amount);
+    updateSusFarmUI();
+  },
+  fastForward: (seconds) => {
+    const state = window.SUSFARM_STATE?.getState();
+    if (state) {
+      state.plots.forEach(plot => {
+        if (plot.cropKey && plot.remainingSeconds > 0) {
+          plot.remainingSeconds = Math.max(0, plot.remainingSeconds - seconds);
+        }
+      });
+      window.SUSFARM_STATE?.saveState();
+      updateSusFarmUI();
+    }
+  },
+  reset: () => {
+    if (confirm('Reset all farm state?')) {
+      localStorage.removeItem('susfarm.state.v1');
+      location.reload();
+    }
+  }
+};
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+  // Tab buttons
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      switchTab(btn.dataset.tab);
+    });
+  });
+  
+  // Wallet change listener
+  window.addEventListener('walletChanged', () => {
+    updateSusFarmUI();
+  });
+  
+  // Language change listener
+  window.addEventListener('langChanged', () => {
+    updateSusFarmUI();
+  });
+  
+  // Initial render
+  updateSusFarmUI();
+  
+  // Update HUD every second for countdown
+  setInterval(() => {
+    updateHUD();
+    if (currentTab === 'market') {
+      const state = window.SUSFARM_STATE?.getState();
+      if (state) {
+        const now = Date.now();
+        const nextRefresh = MARKET_REFRESH_INTERVAL - (now % MARKET_REFRESH_INTERVAL);
+        const refreshEl = document.getElementById('marketRefresh');
+        if (refreshEl) refreshEl.textContent = formatTime(Math.floor(nextRefresh / 1000));
+        
+        const event = state.market.activeEvent;
+        if (event) {
+          const remaining = Math.max(0, event.endsAt - now);
+          const eventEl = document.getElementById('marketEvent');
+          if (eventEl) {
+            eventEl.textContent = `${t(event.headlineKey)} (${formatTime(Math.floor(remaining / 1000))})`;
+          }
+        }
+      }
+    }
+  }, 1000);
+});
+
+// Export for state.js
+window.updateSusFarmUI = updateSusFarmUI;
+

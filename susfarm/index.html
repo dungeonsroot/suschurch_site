@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="description" content="SusFarm - Cultivate organs. Harvest belief."/>
+  <link rel="icon" type="image/png" href="../assets/icons/sus32.png"/>
+  <title data-i18n="g.susfarm.title">[SUS::FARM]</title>
+  <link rel="stylesheet" href="../assets/style.css"/>
+  <link rel="stylesheet" href="susfarm.css"/>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+  
+  <header>
+    <div class="lang-select">
+      <label for="langSelect" data-i18n="g.sys.lang.select">Language:</label>
+      <select id="langSelect" onchange="window.applyLang(this.value)">
+        <option value="en">EN</option>
+        <option value="zh">繁中</option>
+        <option value="jp">日本語</option>
+      </select>
+    </div>
+    <a href="../index.html" style="color: var(--color-green); text-decoration: none; margin-right: 1rem;">← Back</a>
+  </header>
+  
+  <main id="main" class="container">
+    <h1 data-i18n="g.susfarm.title">[SUS::FARM]</h1>
+    <p data-i18n="g.susfarm.desc">Cultivate organs. Harvest belief. Convert time into SusCoin.</p>
+    
+    <!-- HUD -->
+    <div id="susfarmHud" class="susfarm-hud">
+      <div class="hud-item">
+        <span>💰</span>
+        <span data-i18n="g.susfarm.hud.coin">SusCoin</span>: <span id="hudCoin">0</span>
+      </div>
+      <div class="hud-item">
+        <span>🌱</span>
+        <span data-i18n="g.susfarm.hud.plots">Plots</span>: <span id="hudPlots">0/6</span>
+      </div>
+      <div class="hud-item">
+        <span>⚡</span>
+        <span data-i18n="g.susfarm.hud.auto">Auto</span>: <span id="hudAuto">Lv0</span>
+      </div>
+      <div class="hud-item">
+        <span>🔥</span>
+        <span data-i18n="g.susfarm.hud.streak">Streak</span>: <span id="hudStreak">0</span>
+      </div>
+      <div class="hud-item">
+        <span>⏳</span>
+        <span data-i18n="g.susfarm.hud.next_tick">Next tick</span>: <span id="hudNextTick">00:00</span>
+      </div>
+      <div class="hud-item">
+        <span>🎁</span>
+        <span data-i18n="g.susfarm.hud.next_reward">Next reward</span>: <span id="hudNextReward">-</span>
+      </div>
+    </div>
+    
+    <!-- Tabs -->
+    <div class="susfarm-tabs">
+      <button class="tab-btn active" data-tab="plots" data-i18n="g.susfarm.tab.plant">Plant</button>
+      <button class="tab-btn" data-tab="upgrade" data-i18n="g.susfarm.tab.upgrade">Upgrade</button>
+      <button class="tab-btn" data-tab="market" data-i18n="g.susfarm.tab.market">Market</button>
+      <button class="tab-btn" data-tab="rites" data-i18n="g.susfarm.tab.rites">Rites</button>
+      <button class="tab-btn" data-tab="log" data-i18n="g.susfarm.tab.log">Log</button>
+    </div>
+    
+    <!-- Tab Content -->
+    <div id="tabPlots" class="tab-content active">
+      <div id="plotsContainer" class="plots-container"></div>
+    </div>
+    
+    <div id="tabUpgrade" class="tab-content">
+      <div id="upgradeContainer" class="upgrade-container"></div>
+    </div>
+    
+    <div id="tabMarket" class="tab-content">
+      <p data-i18n="g.susfarm.market.placeholder">Market coming soon...</p>
+    </div>
+    
+    <div id="tabRites" class="tab-content">
+      <div id="ritesContainer" class="rites-container"></div>
+    </div>
+    
+    <div id="tabLog" class="tab-content">
+      <div id="logContainer" class="log-container"></div>
+    </div>
+    
+    <!-- Dev Tools (hidden by default, show with ?dev=1) -->
+    <div id="devTools" class="dev-tools" style="display: none;">
+      <h3>Dev Tools</h3>
+      <button onclick="window.SUSFARM_DEV?.addCoin(1000)">Add 1000 Coin</button>
+      <button onclick="window.SUSFARM_DEV?.fastForward(600)">Fast Forward 10min</button>
+      <button onclick="window.SUSFARM_DEV?.reset()">Reset State</button>
+    </div>
+  </main>
+  
+  <footer>
+    <div data-i18n="g.site.suschurch.footer.seal">[SEAL::sus.church] · Conductor: Entacle Assembly · All identities recursively observed.</div>
+    <div class="disclaimer" data-i18n="g.sys.disclaimer.local">Local-only features. No tracking.</div>
+  </footer>
+  
+  <script src="../assets/i18n.js"></script>
+  <script src="susfarm_wallet.js"></script>
+  <script src="susfarm_data.js"></script>
+  <script src="susfarm_state.js"></script>
+  <script src="susfarm.js"></script>
+  <script>
+    // Check for dev mode
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('dev') === '1') {
+      document.getElementById('devTools').style.display = 'block';
+    }
+    
+    // Initialize i18n
+    document.addEventListener('DOMContentLoaded', () => {
+      const saved = localStorage.getItem('sus_lang');
+      const lang = (saved && window.I18N && window.I18N[saved]) ? saved : 'en';
+      const sel = document.getElementById('langSelect');
+      if (sel) sel.value = lang;
+      if (window.applyLang) window.applyLang(lang);
+    });
+  </script>
+</body>
+</html>
+
