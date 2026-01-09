@@ -219,6 +219,7 @@ h2, h3 {
   min-height: 44px;
 }
 
+.terminal-input:focus,
 .terminal-input:focus-visible {
   outline: none;
   border: 1px solid var(--color-green);

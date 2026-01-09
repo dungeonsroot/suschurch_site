@@ -132,7 +132,14 @@ function addLog(text, type = 'output') {
     }
   }
   
-  // Typewriter effect: delay 2-5 seconds, then type one character at a time
+  // User input (prompt type) shows immediately, no animation
+  if (type === 'prompt') {
+    line.textContent = text;
+    termOut.scrollTop = termOut.scrollHeight;
+    return;
+  }
+  
+  // Terminal replies: delay 2-5 seconds, then type one character at a time
   const delay = 2000 + Math.random() * 3000; // 2-5 seconds
   const chars = text.split('');
   let charIndex = 0;
