@@ -1,0 +1,447 @@
+{
+  "version": "gbook-node-index/1.0",
+  "generated_by": "grammar-i18n-compiler/1.0",
+  "nodes": [
+    {
+      "key": "g.bank.achievements",
+      "grammar": "[BANK::ACHIEVEMENTS]",
+      "tags": [
+        "ui",
+        "bank"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.bank.balance",
+      "grammar": "[BANK::BALANCE]",
+      "tags": [
+        "ui",
+        "bank"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.bank.counter.baptism",
+      "grammar": "[BANK::COUNTER::BAPTISM]",
+      "tags": [
+        "ui",
+        "bank"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.bank.counter.confess",
+      "grammar": "[BANK::COUNTER::CONFESS]",
+      "tags": [
+        "ui",
+        "bank"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.bank.counter.earn",
+      "grammar": "[BANK::COUNTER::EARN]",
+      "tags": [
+        "ui",
+        "bank"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.bank.counter.seal",
+      "grammar": "[BANK::COUNTER::SEAL]",
+      "tags": [
+        "ui",
+        "bank"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.bank.counters",
+      "grammar": "[BANK::COUNTERS]",
+      "tags": [
+        "ui",
+        "bank"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.bank.title",
+      "grammar": "[BANK::TITLE]",
+      "tags": [
+        "ui",
+        "bank"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.confess.cta.export.json",
+      "grammar": "[CONFESS::CTA::EXPORT::JSON]",
+      "tags": [
+        "ui",
+        "confess"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.confess.cta.export.txt",
+      "grammar": "[CONFESS::CTA::EXPORT::TXT]",
+      "tags": [
+        "ui",
+        "confess"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.confess.cta.submit",
+      "grammar": "[CONFESS::CTA::SUBMIT]",
+      "tags": [
+        "ui",
+        "confess"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.confess.cta.wipe",
+      "grammar": "[CONFESS::CTA::WIPE]",
+      "tags": [
+        "ui",
+        "confess"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.confess.desc",
+      "grammar": "[CONFESS::DESC]",
+      "tags": [
+        "ui",
+        "confess"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.confess.input.placeholder",
+      "grammar": "[CONFESS::INPUT::PLACEHOLDER]",
+      "tags": [
+        "ui",
+        "confess"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.confess.list",
+      "grammar": "[CONFESS::LIST]",
+      "tags": [
+        "ui",
+        "confess"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.confess.title",
+      "grammar": "[CONFESS::TITLE]",
+      "tags": [
+        "ui",
+        "confess"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.rite.baptism.cta",
+      "grammar": "[RITE::BAPTISM::CTA]",
+      "tags": [
+        "ui",
+        "rite"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.rite.baptism.desc",
+      "grammar": "[RITE::BAPTISM::DESC]",
+      "tags": [
+        "ui",
+        "rite"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.rite.baptism.title",
+      "grammar": "[RITE::BAPTISM::TITLE]",
+      "tags": [
+        "ui",
+        "rite"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.rite.baptism.toast.success",
+      "grammar": "[RITE::BAPTISM::TOAST::SUCCESS]",
+      "tags": [
+        "ui",
+        "rite"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.shop.desc",
+      "grammar": "[SHOP::DESC]",
+      "tags": [
+        "ui",
+        "shop"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.shop.title",
+      "grammar": "[SHOP::TITLE]",
+      "tags": [
+        "ui",
+        "shop"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.site.fundraising.address",
+      "grammar": "[SITE::FUNDRAISING::ADDRESS]",
+      "tags": [
+        "ui",
+        "site"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.site.fundraising.chains",
+      "grammar": "[SITE::FUNDRAISING::CHAINS]",
+      "tags": [
+        "ui",
+        "site"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.site.fundraising.cta.copy",
+      "grammar": "[SITE::FUNDRAISING::CTA::COPY]",
+      "tags": [
+        "ui",
+        "site"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.site.fundraising.cta.donate",
+      "grammar": "[SITE::FUNDRAISING::CTA::DONATE]",
+      "tags": [
+        "ui",
+        "site"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.site.fundraising.desc",
+      "grammar": "[SITE::FUNDRAISING::DESC]",
+      "tags": [
+        "ui",
+        "site"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.site.fundraising.item.1",
+      "grammar": "[SITE::FUNDRAISING::ITEM::1]",
+      "tags": [
+        "ui",
+        "site"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.site.fundraising.item.2",
+      "grammar": "[SITE::FUNDRAISING::ITEM::2]",
+      "tags": [
+        "ui",
+        "site"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.site.fundraising.thanks",
+      "grammar": "[SITE::FUNDRAISING::THANKS]",
+      "tags": [
+        "ui",
+        "site"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.site.fundraising.title",
+      "grammar": "[SITE::FUNDRAISING::TITLE]",
+      "tags": [
+        "ui",
+        "site"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.site.fundraising.toast.copied",
+      "grammar": "[SITE::FUNDRAISING::TOAST::COPIED]",
+      "tags": [
+        "ui",
+        "site"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.site.fundraising.toast.failed",
+      "grammar": "[SITE::FUNDRAISING::TOAST::FAILED]",
+      "tags": [
+        "ui",
+        "site"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.site.nav.baptism",
+      "grammar": "[SITE::NAV::BAPTISM]",
+      "tags": [
+        "ui",
+        "site"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.site.nav.confess",
+      "grammar": "[SITE::NAV::CONFESS]",
+      "tags": [
+        "ui",
+        "site"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.site.nav.fundraising",
+      "grammar": "[SITE::NAV::FUNDRAISING]",
+      "tags": [
+        "ui",
+        "site"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.site.nav.susbank",
+      "grammar": "[SITE::NAV::SUSBANK]",
+      "tags": [
+        "ui",
+        "site"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.site.nav.susshop",
+      "grammar": "[SITE::NAV::SUSSHOP]",
+      "tags": [
+        "ui",
+        "site"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.site.nav.terminal",
+      "grammar": "[SITE::NAV::TERMINAL]",
+      "tags": [
+        "ui",
+        "site"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.site.suschurch.footer.seal",
+      "grammar": "[SITE::SUSCHURCH::FOOTER::SEAL]",
+      "tags": [
+        "ui",
+        "site"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.site.suschurch.ticker",
+      "grammar": "[SITE::SUSCHURCH::TICKER]",
+      "tags": [
+        "ui",
+        "site"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.site.suschurch.title",
+      "grammar": "[SITE::SUSCHURCH::TITLE]",
+      "tags": [
+        "ui",
+        "site"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.sys.disclaimer.local",
+      "grammar": "[SYS::DISCLAIMER::LOCAL]",
+      "tags": [
+        "ui",
+        "sys"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.sys.lang.select",
+      "grammar": "[SYS::LANG::SELECT]",
+      "tags": [
+        "ui",
+        "sys"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.term.banner.welcome",
+      "grammar": "[TERM::BANNER::WELCOME]",
+      "tags": [
+        "ui",
+        "term"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.term.hint",
+      "grammar": "[TERM::HINT]",
+      "tags": [
+        "ui",
+        "term"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.term.input.placeholder",
+      "grammar": "[TERM::INPUT::PLACEHOLDER]",
+      "tags": [
+        "ui",
+        "term"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.term.prompt",
+      "grammar": "[TERM::PROMPT]",
+      "tags": [
+        "ui",
+        "term"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.term.title",
+      "grammar": "[TERM::TITLE]",
+      "tags": [
+        "ui",
+        "term"
+      ],
+      "notes": ""
+    }
+  ]
+}
