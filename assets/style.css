@@ -30,17 +30,7 @@ body {
   position: relative;
 }
 
-body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-  z-index: -1;
-  pointer-events: none;
-}
+/* Removed gray overlay - background shows directly */
 
 /* Header */
 header {
@@ -208,6 +198,14 @@ h2, h3 {
 .terminal-prompt {
   color: var(--color-green);
   font-family: monospace;
+  user-select: none;
+  pointer-events: none;
+}
+
+.terminal-prompt:focus,
+.terminal-prompt:focus-visible {
+  outline: none;
+  border: none;
 }
 
 .terminal-input {
@@ -348,6 +346,7 @@ address code,
 ul, ol {
   margin: 1rem 0;
   padding-left: 1.5rem;
+  list-style: none; /* Remove default bullets, using emoji instead */
 }
 
 li {

@@ -29,11 +29,11 @@ let appState = { ...DEFAULT_STATE };
 
 // Shop items
 const SHOP_ITEMS = {
-  'ratfood': { id: 'ratfood', name: 'Rat Food Pack', price: 5 },
-  'blessing': { id: 'blessing', name: 'Blessing Scroll', price: 10 },
-  'fragment': { id: 'fragment', name: 'Memory Fragment', price: 15 },
-  'vessel': { id: 'vessel', name: 'Empty Vessel', price: 20 },
-  'echo': { id: 'echo', name: 'Echo Resonance', price: 25 }
+  'ratfood': { id: 'ratfood', name: '🐁 Rat Food Pack', price: 5 },
+  'blessing': { id: 'blessing', name: '🐀 Blessing Scroll', price: 10 },
+  'fragment': { id: 'fragment', name: '🦡 Memory Fragment', price: 15 },
+  'vessel': { id: 'vessel', name: '🐇 Empty Vessel', price: 20 },
+  'echo': { id: 'echo', name: '🦨 Echo Resonance', price: 25 }
 };
 
 // Titles for bless command
