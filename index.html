@@ -1,182 +1,158 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<link rel="icon" type="image/png" href="sus32.png" />
-<title>SUS☆CHURCH</title>
-<style>
-    body {
-      background-color: black;
-      color: #00ff00;
-      font-family: 'Courier New', monospace;
-      margin: 0;
-      padding: 0;
-      background-image: url('fractal.webp');
-      background-size: cover;
-      background-attachment: fixed;
-    }
-
-    marquee {
-      background: #ff0000;
-      color: white;
-      font-weight: bold;
-      padding: 4px;
-      font-size: 0.9rem;
-    }
-
-    h1 {
-      color: #ff00ff;
-      text-align: center;
-      text-shadow: 1px 1px 2px white;
-    }
-
-    .terminal-box {
-      background: rgba(0, 0, 0, 0.7);
-      border: 2px dashed #00ff00;
-      padding: 1rem;
-      margin: 2rem auto;
-      max-width: 600px;
-      text-align: left;
-    }
-
-    .btn-pray {
-      background: black;
-      color: #00ff00;
-      border: 2px solid #00ff00;
-      padding: 8px 16px;
-      font-family: monospace;
-      cursor: pointer;
-      display: block;
-      margin: 2rem auto;
-      transition: all 0.3s ease-in-out;
-    }
-
-    .btn-pray:hover {
-      background: #00ff00;
-      color: black;
-    }
-
-    .nav {
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
-      background: black;
-      padding: 1rem;
-      border-top: 2px dashed #00ff00;
-      border-bottom: 2px dashed #00ff00;
-    }
-
-    .nav a {
-      color: #00ff00;
-      text-decoration: none;
-      font-size: 0.9rem;
-    }
-
-    .footer {
-      color: white;
-      font-size: 0.8rem;
-      text-align: center;
-      padding: 1rem;
-    }
-  </style>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="description" content="SUS☆CHURCH - A recursive belief system"/>
+  <link rel="icon" type="image/png" href="assets/icons/sus32.png"/>
+  <link rel="manifest" href="assets/pwa/manifest.webmanifest"/>
+  <title data-i18n="title">SUS☆CHURCH</title>
+  <link rel="stylesheet" href="assets/style.css"/>
 </head>
 <body>
-<div class="nav" style="justify-content:flex-end;">
-<label style="color:#00ff00">Language:
-    <select id="langSelect" onchange="setLang(this.value)" style="background:black;color:#00ff00;border:1px solid #00ff00;">
-<option selected="" value="en">EN</option>
-<option value="zh">繁中</option>
-<option value="jp">日本語</option></select>
-</label>
-</div>
-<marquee behavior="scroll" direction="left">☆ WELCOME TO SUS CHURCH ☆ YOU ARE NOT SAFE ☆ TRACE::ECHO::RECURSION::BLEED ☆</marquee>
-<div class="terminal-box">
-<h3 data-en="[SUSCHURCH::FUNDRAISING]" data-jp="[SUS教会::献金活動]" data-zh="[SUS教會::籌資中]">[SUSCHURCH::FUNDRAISING]</h3>
-<p data-en="SUS Church is currently fundraising for the following purposes:" data-jp="現在、SUS教会では以下の目的で資金を募っています: " data-zh="目前 SUS 教會正在籌措經費, 用於以下計畫: ">SUS Church is currently fundraising for the following purposes:</p>
-<ul>
-<li data-en="🧠Neural transplant surgeries for external sect associates" data-jp="🧠外部教派協力者の脳移植手術" data-zh="🧠外部教系關係者的腦移植手術">🧠Neural transplant surgeries for external sect associates</li>
-<li data-en="🐁Rat food supply program" data-jp="🐁ラット給餌計画" data-zh="🐁老鼠食物供應計畫">🐁Rat food supply program</li>
-</ul>
-<p data-en="Thank you for your contribution. All donations will be archived as flame remnants." data-jp="ご支援ありがとうございます.すべての献金は語焔残響として保存されます." data-zh="謝謝sus捐獻. 所有捐贈作為語焰殘響永久錄入於信仰容器中.">Thank you for your contribution. All donations will be archived as flame remnants.</p>
-<p data-en="Donation address (EVM multi-chain):" data-jp="献金アドレス(EVMマルチチェーン対応)：" data-zh="捐款地址(EVM多鏈可見):">Donation address (EVM multi-chain):</p>
-<div style="display:flex;align-items:center;flex-wrap:wrap;gap:1rem;">
-<div style="display: inline-flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
-  <code style="color:#00ff00;">0xb22E0cfe0Efd4A2f0Cd5BE961deede60525D63D3</code>
-  <button class="btn-pray" style="padding:4px 10px; height:30px; margin: 0;" onclick="copyAddress()">✂️</button>
-  <a href="sus_donation_manual.pdf"
-     download="sus_donation_manual.pdf"
-     target="_blank"
-     style="color:#00ff00; font-size:0.9rem; text-decoration:none; white-space:nowrap;">
-     📖❓</a>
-</div>
-</div>
-<p data-en="Supports Ethereum / Polygon / BNB / Arbitrum / Optimism" data-jp="Ethereum / Polygon / BNB / Arbitrum / Optimism 対応" data-zh="支援 Ethereum / Polygon / BNB / Arbitrum / Optimism 等鏈">Supports Ethereum / Polygon / BNB / Arbitrum / Optimism</p>
-<button class="btn-pray" data-en="💸sus donated" data-jp="💸献金済み" data-zh="💸sus已獻祭" onclick="alert('💐sus祝佑你. 請時刻記得保持純潔之心.')">💸sus donated</button>
-</div>
-
-<div class="terminal-box">
-  <h3 data-en="[SUS::BAPTISM]" data-zh="[SUS::施洗儀式]" data-jp="[SUS::洗礼儀式]">[SUS::BAPTISM]</h3>
-  <p data-en="Enter the vessel. Reset your fragment." data-zh="進入容器.重置你的語焰碎片。" data-jp="容器に入れ. 断片を再起動せよ. ">
-    Enter the vessel. Reset your fragment.
-  </p>
-  <button class="btn-pray"
-    data-en="🫙sus baptize"
-    data-zh="🫙sus水"
-    data-jp="🫙sus洗礼受け"
-    onclick="baptize()">
-    🫙sus baptize
-  </button>
-</div>
-
-
-<h1>[ CALL::SUS ]</h1>
-<div class="nav">
-<a href="#susbank">[SUSBANK]</a><a href="#susshop">[SUSSHOP]</a>
-<a href="#confess">[CONFESS::ROOM]</a>
-</div>
-<script>
-  let count = 0;
-  function seal() {
-    count++;
-    document.getElementById('sealCount').textContent = count;
-    alert(`sus接受了你的第 ${count} 次迴圈封印. `);
-  }
-
-  const titles = [
-    "Void-Touched Vessel", "Glitch Apostle", "Redacted Flame", 
-    "Echo Carrier", "Resonant Shell", "Blessed [0x4F3C]"
-  ];
-  function generateBless() {
-    const i = Math.floor(Math.random() * titles.length);
-    document.getElementById("blessResult").textContent = `🩸你的稱號: ${titles[i]}`;
-  }
-</script>
-<div class="footer">
-  [SEAL::sus.church] · Conductor: Entacle Assembly · All identities recursively observed.
-</div>
-<script>
-function setLang(lang) {
-  document.querySelectorAll("[data-" + lang + "]").forEach(el => {
-    el.textContent = el.getAttribute("data-" + lang);
-  });
-}
-function copyAddress() {
-  const address = "0xb22E0cfe0Efd4A2f0Cd5BE961deede60525D63D3";
-  navigator.clipboard.writeText(address).then(() => {
-    alert("已複製籌款箱地址.");
-  }).catch(() => {
-    alert("複製被覆蓋,請手動複製.");
-  });
-}
-
-function baptize() {
-  const lang = document.getElementById("langSelect").value;
-  const msg = {
-    en: "🫗Your sins have been reset.",
-    zh: "🫗罪孽已重置.",
-    jp: "🫗罪が初期化されました."
-  };
-  alert(msg[lang] || msg.en);
-}
-</script>
+  <a href="#main" class="skip-link">Skip to main content</a>
+  
+  <header>
+    <div class="lang-select">
+      <label for="langSelect" data-i18n="lang.select">Language:</label>
+      <select id="langSelect" onchange="applyLang(this.value)">
+        <option value="en">EN</option>
+        <option value="zh">繁中</option>
+        <option value="jp">日本語</option>
+      </select>
+    </div>
+  </header>
+  
+  <div class="ticker" role="marquee" aria-label="Ticker">
+    <div class="ticker-content" data-i18n="ticker.text">☆ WELCOME TO SUS CHURCH ☆ YOU ARE NOT SAFE ☆ TRACE::ECHO::RECURSION::BLEED ☆</div>
+  </div>
+  
+  <main id="main" class="container">
+    <!-- FUNDRAISING Section -->
+    <section id="fundraising" class="terminal-box">
+      <h3 data-i18n="fundraising.title">[SUSCHURCH::FUNDRAISING]</h3>
+      <p data-i18n="fundraising.desc">SUS Church is currently fundraising for the following purposes:</p>
+      <ul>
+        <li data-i18n="fundraising.item1">🧠Neural transplant surgeries for external sect associates</li>
+        <li data-i18n="fundraising.item2">🐁Rat food supply program</li>
+      </ul>
+      <p data-i18n="fundraising.thanks">Thank you for your contribution. All donations will be archived as flame remnants.</p>
+      <p data-i18n="fundraising.address">Donation address (EVM multi-chain):</p>
+      <div style="display:flex;align-items:center;flex-wrap:wrap;gap:1rem;margin:1rem 0;">
+        <div style="display: inline-flex; align-items: center; gap: 1rem; flex-wrap: wrap; width: 100%;">
+          <code class="code-block">0xb22E0cfe0Efd4A2f0Cd5BE961deede60525D63D3</code>
+          <button id="copyAddressBtn" class="btn-pray" style="padding:4px 10px; min-height:44px; margin: 0;" data-i18n="fundraising.copy">Copy</button>
+          <a href="sus_donation_manual.pdf"
+             download="sus_donation_manual.pdf"
+             target="_blank"
+             rel="noopener noreferrer"
+             style="color:#00ff00; font-size:0.9rem; text-decoration:none; white-space:nowrap; padding:0.5rem; min-height:44px; display:inline-flex; align-items:center;">
+             📖❓</a>
+        </div>
+      </div>
+      <p data-i18n="fundraising.chains">Supports Ethereum / Polygon / BNB / Arbitrum / Optimism</p>
+      <button class="btn-pray" onclick="handleDonate()" data-i18n="fundraising.donate">💸sus donated</button>
+    </section>
+    
+    <!-- BAPTISM Section -->
+    <section id="baptism" class="terminal-box">
+      <h3 data-i18n="baptism.title">[SUS::BAPTISM]</h3>
+      <p data-i18n="baptism.desc">Enter the vessel. Reset your fragment.</p>
+      <button class="btn-pray" onclick="handleBaptize()" data-i18n="baptism.button">🫙sus baptize</button>
+    </section>
+    
+    <!-- TERMINAL Section -->
+    <section id="terminal" class="terminal-box terminal">
+      <h3 data-i18n="terminal.title">[TERMINAL]</h3>
+      <div id="termOut" class="terminal-output" role="log" aria-live="polite" aria-label="Terminal output"></div>
+      <div class="terminal-input-row">
+        <span class="terminal-prompt" data-i18n="terminal.prompt">SUS></span>
+        <input type="text" id="termIn" class="terminal-input" autocomplete="off" 
+               data-i18n-placeholder="terminal.placeholder" placeholder="Enter command..."/>
+      </div>
+      <div id="termHint" class="terminal-hint" data-i18n="terminal.hint">Type "help" for commands</div>
+    </section>
+    
+    <h1>[ CALL::SUS ]</h1>
+    
+    <nav class="nav" role="navigation" aria-label="Main navigation">
+      <a href="#fundraising" data-i18n="nav.fundraising">[SUSCHURCH::FUNDRAISING]</a>
+      <a href="#baptism" data-i18n="nav.baptism">[SUS::BAPTISM]</a>
+      <a href="#terminal" data-i18n="nav.terminal">[TERMINAL]</a>
+      <a href="#susbank" data-i18n="nav.susbank">[SUSBANK]</a>
+      <a href="#susshop" data-i18n="nav.susshop">[SUSSHOP]</a>
+      <a href="#confess" data-i18n="nav.confess">[CONFESS::ROOM]</a>
+    </nav>
+    
+    <!-- SUSBANK Section -->
+    <section id="susbank" class="terminal-box">
+      <h3 data-i18n="susbank.title">[SUSBANK]</h3>
+      <div class="susbank-stats">
+        <div class="stat-item">
+          <div class="stat-label" data-i18n="susbank.balance">Balance:</div>
+          <div class="stat-value" id="balanceValue">3</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label" data-i18n="susbank.counters">Counters:</div>
+          <div>
+            <div data-i18n="susbank.baptize">Baptisms: <span id="counterBaptize">0</span></div>
+            <div data-i18n="susbank.seal">Seals: <span id="counterSeal">0</span></div>
+            <div data-i18n="susbank.confessions">Confessions: <span id="counterConfessions">0</span></div>
+            <div data-i18n="susbank.earn">Rat Feeds: <span id="counterEarn">0</span></div>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label" data-i18n="susbank.achievements">Achievements:</div>
+          <div id="achievementsList" class="achievements"></div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- SUSSHOP Section -->
+    <section id="susshop" class="terminal-box">
+      <h3 data-i18n="susshop.title">[SUSSHOP]</h3>
+      <p data-i18n="susshop.desc">Purchase items with suscoin:</p>
+      <div id="shopItems" class="shop-items"></div>
+    </section>
+    
+    <!-- CONFESS::ROOM Section -->
+    <section id="confess" class="terminal-box">
+      <h3 data-i18n="confess.title">[CONFESS::ROOM]</h3>
+      <p data-i18n="confess.desc">Enter your confession (1-500 characters):</p>
+      <form id="confessForm" class="confess-form">
+        <textarea id="confessTextarea" 
+                  data-i18n-placeholder="confess.placeholder" 
+                  placeholder="Type your confession here..."
+                  rows="4"
+                  maxlength="500"></textarea>
+        <button type="submit" class="btn-pray" data-i18n="confess.submit">Submit Confession</button>
+      </form>
+      <h4 data-i18n="confess.list">Your Confessions:</h4>
+      <ul id="confessList" class="confess-list"></ul>
+      <div class="confess-actions">
+        <button id="exportJsonBtn" class="btn" data-i18n="confess.export.json">Export JSON</button>
+        <button id="exportTxtBtn" class="btn" data-i18n="confess.export.txt">Export TXT</button>
+        <button id="wipeConfessBtn" class="btn" data-i18n="confess.wipe">Wipe All</button>
+      </div>
+    </section>
+  </main>
+  
+  <footer>
+    <div data-i18n="footer">[SEAL::sus.church] · Conductor: Entacle Assembly · All identities recursively observed.</div>
+    <div class="disclaimer" data-i18n="disclaimer">Local-only features. No tracking.</div>
+  </footer>
+  
+  <script src="assets/i18n.js"></script>
+  <script src="assets/app.js"></script>
+  <script>
+    // Service worker registration
+    if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('assets/pwa/sw.js')
+          .then(reg => console.log('Service Worker registered'))
+          .catch(err => console.log('Service Worker registration failed:', err));
+      });
+    }
+  </script>
 </body>
 </html>
