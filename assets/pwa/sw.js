@@ -1,5 +1,5 @@
 // Service Worker for SUS CHURCH
-const CACHE_NAME = 'sus-church-v1';
+const CACHE_NAME = 'sus-church-v2';
 const CACHE_URLS = [
   '/',
   '/index.html',
