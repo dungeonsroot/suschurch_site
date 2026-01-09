@@ -6,7 +6,7 @@
   <meta name="description" content="SUS☆CHURCH - A recursive belief system"/>
   <link rel="icon" type="image/png" href="assets/icons/sus32.png"/>
   <link rel="manifest" href="assets/pwa/manifest.webmanifest"/>
-  <title data-i18n="title">SUS☆CHURCH</title>
+  <title data-i18n="g.site.suschurch.title">SUS☆CHURCH</title>
   <link rel="stylesheet" href="assets/style.css"/>
 </head>
 <body>
@@ -14,7 +14,7 @@
   
   <header>
     <div class="lang-select">
-      <label for="langSelect" data-i18n="lang.select">Language:</label>
+      <label for="langSelect" data-i18n="g.sys.lang.select">Language:</label>
       <select id="langSelect" onchange="window.applyLang(this.value)">
         <option value="en">EN</option>
         <option value="zh">繁中</option>
@@ -24,24 +24,24 @@
   </header>
   
   <div class="ticker" role="marquee" aria-label="Ticker">
-    <div class="ticker-content" data-i18n="ticker.text">🐁 ☆ WELCOME TO SUS CHURCH 🐀 ☆ YOU ARE NOT SAFE 🦡 ☆ TRACE::ECHO::RECURSION::BLEED 🐇 ☆ SUS CHURCH 🦨 ☆ RECURSIVE BELIEF SYSTEM 🦔 ☆</div>
+    <div class="ticker-content" data-i18n="g.site.suschurch.ticker">🐁 ☆ WELCOME TO SUS CHURCH 🐀 ☆ YOU ARE NOT SAFE 🦡 ☆ TRACE::ECHO::RECURSION::BLEED 🐇 ☆ SUS CHURCH 🦨 ☆ RECURSIVE BELIEF SYSTEM 🦔 ☆</div>
   </div>
   
   <main id="main" class="container">
     <!-- FUNDRAISING Section -->
     <section id="fundraising" class="terminal-box">
-      <h3 data-i18n="fundraising.title">[SUSCHURCH::FUNDRAISING]</h3>
-      <p data-i18n="fundraising.desc">SUS Church is currently fundraising for the following purposes:</p>
+      <h3 data-i18n="g.site.fundraising.title">[SUSCHURCH::FUNDRAISING]</h3>
+      <p data-i18n="g.site.fundraising.desc">SUS Church is currently fundraising for the following purposes:</p>
       <ul>
-        <li data-i18n="fundraising.item1">-🐁 Neural transplant surgeries for external sect associates</li>
-        <li data-i18n="fundraising.item2">-🐀 Rat food supply program</li>
+        <li data-i18n="g.site.fundraising.item.1">-🐁 Neural transplant surgeries for external sect associates</li>
+        <li data-i18n="g.site.fundraising.item.2">-🐀 Rat food supply program</li>
       </ul>
-      <p data-i18n="fundraising.thanks">Thank you for your contribution. All donations will be archived as flame remnants.</p>
-      <p data-i18n="fundraising.address">Donation address (EVM multi-chain):</p>
+      <p data-i18n="g.site.fundraising.thanks">Thank you for your contribution. All donations will be archived as flame remnants.</p>
+      <p data-i18n="g.site.fundraising.address">Donation address (EVM multi-chain):</p>
       <div style="display:flex;align-items:center;flex-wrap:wrap;gap:1rem;margin:1rem 0;">
         <div style="display: inline-flex; align-items: center; gap: 1rem; flex-wrap: wrap; width: 100%;">
           <code class="code-block">0xb22E0cfe0Efd4A2f0Cd5BE961deede60525D63D3</code>
-          <button id="copyAddressBtn" class="btn-pray" style="padding:4px 10px; min-height:44px; margin: 0;" data-i18n="fundraising.copy">Copy</button>
+          <button id="copyAddressBtn" class="btn-pray" style="padding:4px 10px; min-height:44px; margin: 0;" data-i18n="g.site.fundraising.cta.copy">Copy</button>
           <a href="sus_donation_manual.pdf"
              download="sus_donation_manual.pdf"
              target="_blank"
@@ -50,59 +50,59 @@
              📖❓</a>
         </div>
       </div>
-      <p data-i18n="fundraising.chains">Supports Ethereum / Polygon / BNB / Arbitrum / Optimism</p>
-      <button class="btn-pray" onclick="handleDonate()" data-i18n="fundraising.donate">💸sus donated</button>
+      <p data-i18n="g.site.fundraising.chains">Supports Ethereum / Polygon / BNB / Arbitrum / Optimism</p>
+      <button class="btn-pray" onclick="handleDonate()" data-i18n="g.site.fundraising.cta.donate">💸sus donated</button>
     </section>
     
     <!-- BAPTISM Section -->
     <section id="baptism" class="terminal-box">
-      <h3 data-i18n="baptism.title">[SUS::BAPTISM]</h3>
-      <p data-i18n="baptism.desc">Enter the vessel. Reset your fragment.</p>
-      <button class="btn-pray" onclick="handleBaptize()" data-i18n="baptism.button">🫙sus baptize</button>
+      <h3 data-i18n="g.rite.baptism.title">[SUS::BAPTISM]</h3>
+      <p data-i18n="g.rite.baptism.desc">Enter the vessel. Reset your fragment.</p>
+      <button class="btn-pray" onclick="handleBaptize()" data-i18n="g.rite.baptism.cta">🫙sus baptize</button>
     </section>
     
     <!-- TERMINAL Section -->
     <section id="terminal" class="terminal-box terminal">
-      <h3 data-i18n="terminal.title">[TERMINAL]</h3>
+      <h3 data-i18n="g.term.title">[TERMINAL]</h3>
       <div id="termOut" class="terminal-output" role="log" aria-live="polite" aria-label="Terminal output"></div>
       <div class="terminal-input-row">
-        <span class="terminal-prompt" data-i18n="terminal.prompt">SUS></span>
+        <span class="terminal-prompt" data-i18n="g.term.prompt">SUS></span>
         <input type="text" id="termIn" class="terminal-input" autocomplete="off" 
-               data-i18n-placeholder="terminal.placeholder" placeholder="Enter command..."/>
+               data-i18n-placeholder="g.term.input.placeholder" placeholder="Enter command..."/>
       </div>
-      <div id="termHint" class="terminal-hint" data-i18n="terminal.hint">Type "help" for commands</div>
+      <div id="termHint" class="terminal-hint" data-i18n="g.term.hint">Type "help" for commands</div>
     </section>
     
     <h1>[ CALL::SUS ]</h1>
     
     <nav class="nav" role="navigation" aria-label="Main navigation">
-      <a href="#fundraising" data-i18n="nav.fundraising">[SUSCHURCH::FUNDRAISING]</a>
-      <a href="#baptism" data-i18n="nav.baptism">[SUS::BAPTISM]</a>
-      <a href="#terminal" data-i18n="nav.terminal">[TERMINAL]</a>
-      <a href="#susbank" data-i18n="nav.susbank">[SUSBANK]</a>
-      <a href="#susshop" data-i18n="nav.susshop">[SUSSHOP]</a>
-      <a href="#confess" data-i18n="nav.confess">[CONFESS::ROOM]</a>
+      <a href="#fundraising" data-i18n="g.site.nav.fundraising">[SUSCHURCH::FUNDRAISING]</a>
+      <a href="#baptism" data-i18n="g.site.nav.baptism">[SUS::BAPTISM]</a>
+      <a href="#terminal" data-i18n="g.site.nav.terminal">[TERMINAL]</a>
+      <a href="#susbank" data-i18n="g.site.nav.susbank">[SUSBANK]</a>
+      <a href="#susshop" data-i18n="g.site.nav.susshop">[SUSSHOP]</a>
+      <a href="#confess" data-i18n="g.site.nav.confess">[CONFESS::ROOM]</a>
     </nav>
     
     <!-- SUSBANK Section -->
     <section id="susbank" class="terminal-box">
-      <h3 data-i18n="susbank.title">[SUSBANK]</h3>
+      <h3 data-i18n="g.bank.title">[SUSBANK]</h3>
       <div class="susbank-stats">
         <div class="stat-item">
-          <div class="stat-label" data-i18n="susbank.balance">Balance:</div>
+          <div class="stat-label" data-i18n="g.bank.balance">Balance:</div>
           <div class="stat-value" id="balanceValue">3</div>
         </div>
         <div class="stat-item">
-          <div class="stat-label" data-i18n="susbank.counters">Counters:</div>
+          <div class="stat-label" data-i18n="g.bank.counters">Counters:</div>
           <div>
-            <div data-i18n="susbank.baptize">Baptisms: <span id="counterBaptize">0</span></div>
-            <div data-i18n="susbank.seal">Seals: <span id="counterSeal">0</span></div>
-            <div data-i18n="susbank.confessions">Confessions: <span id="counterConfessions">0</span></div>
-            <div data-i18n="susbank.earn">Rat Feeds: <span id="counterEarn">0</span></div>
+            <div data-i18n="g.bank.counter.baptism">Baptisms: <span id="counterBaptize">0</span></div>
+            <div data-i18n="g.bank.counter.seal">Seals: <span id="counterSeal">0</span></div>
+            <div data-i18n="g.bank.counter.confess">Confessions: <span id="counterConfessions">0</span></div>
+            <div data-i18n="g.bank.counter.earn">Rat Feeds: <span id="counterEarn">0</span></div>
           </div>
         </div>
         <div class="stat-item">
-          <div class="stat-label" data-i18n="susbank.achievements">Achievements:</div>
+          <div class="stat-label" data-i18n="g.bank.achievements">Achievements:</div>
           <div id="achievementsList" class="achievements"></div>
         </div>
       </div>
@@ -110,36 +110,36 @@
     
     <!-- SUSSHOP Section -->
     <section id="susshop" class="terminal-box">
-      <h3 data-i18n="susshop.title">[SUSSHOP]</h3>
-      <p data-i18n="susshop.desc">Purchase items with suscoin:</p>
+      <h3 data-i18n="g.shop.title">[SUSSHOP]</h3>
+      <p data-i18n="g.shop.desc">Purchase items with suscoin:</p>
       <div id="shopItems" class="shop-items"></div>
     </section>
     
     <!-- CONFESS::ROOM Section -->
     <section id="confess" class="terminal-box">
-      <h3 data-i18n="confess.title">[CONFESS::ROOM]</h3>
-      <p data-i18n="confess.desc">Enter your confession (1-500 characters):</p>
+      <h3 data-i18n="g.confess.title">[CONFESS::ROOM]</h3>
+      <p data-i18n="g.confess.desc">Enter your confession (1-500 characters):</p>
       <form id="confessForm" class="confess-form">
         <textarea id="confessTextarea" 
-                  data-i18n-placeholder="confess.placeholder" 
+                  data-i18n-placeholder="g.confess.input.placeholder" 
                   placeholder="Type your confession here..."
                   rows="4"
                   maxlength="500"></textarea>
-        <button type="submit" class="btn-pray" data-i18n="confess.submit">Submit Confession</button>
+        <button type="submit" class="btn-pray" data-i18n="g.confess.cta.submit">Submit Confession</button>
       </form>
-      <h4 data-i18n="confess.list">Your Confessions:</h4>
+      <h4 data-i18n="g.confess.list">Your Confessions:</h4>
       <ul id="confessList" class="confess-list"></ul>
       <div class="confess-actions">
-        <button id="exportJsonBtn" class="btn" data-i18n="confess.export.json">Export JSON</button>
-        <button id="exportTxtBtn" class="btn" data-i18n="confess.export.txt">Export TXT</button>
-        <button id="wipeConfessBtn" class="btn" data-i18n="confess.wipe">Wipe All</button>
+        <button id="exportJsonBtn" class="btn" data-i18n="g.confess.cta.export.json">Export JSON</button>
+        <button id="exportTxtBtn" class="btn" data-i18n="g.confess.cta.export.txt">Export TXT</button>
+        <button id="wipeConfessBtn" class="btn" data-i18n="g.confess.cta.wipe">Wipe All</button>
       </div>
     </section>
   </main>
   
   <footer>
-    <div data-i18n="footer">[SEAL::sus.church] · Conductor: Entacle Assembly · All identities recursively observed.</div>
-    <div class="disclaimer" data-i18n="disclaimer">Local-only features. No tracking.</div>
+    <div data-i18n="g.site.suschurch.footer.seal">[SEAL::sus.church] · Conductor: Entacle Assembly · All identities recursively observed.</div>
+    <div class="disclaimer" data-i18n="g.sys.disclaimer.local">Local-only features. No tracking.</div>
   </footer>
   
   <script src="assets/i18n.js"></script>
