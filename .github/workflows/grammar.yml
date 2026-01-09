@@ -19,7 +19,7 @@ jobs:
       - name: Build reports
         run: |
           python tools/grammar_i18n_compiler.py validate --nodes grammar/nodes.json --i18n-dir i18n --report-dir dist/reports
-          python tools/grammar_i18n_compiler.py scan-ui --nodes grammar/nodes.json --i18n-dir i18n --scan-paths index.html --report-dir dist/reports
+          python tools/grammar_i18n_compiler.py scan-ui --nodes grammar/nodes.json --i18n-dir i18n --scan-paths . --report-dir dist/reports
 
       - name: Enforce gates
         run: |

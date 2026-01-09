@@ -14,6 +14,16 @@ VERSION = "grammar-i18n-compiler/1.0"
 
 DATA_I18N_RE = re.compile(r'''data-i18n\s*=\s*["']([^"']+)["']''', re.IGNORECASE)
 
+DEFAULT_IGNORE_DIRS = {
+  "dist",
+  "node_modules",
+  "vendor",
+  ".git",
+  ".next",
+  ".vercel",
+  ".cache",
+}
+
 
 @dataclass
 class Node:
@@ -227,26 +237,51 @@ def cmd_patch(args):
     write_json(os.path.join(args.out_dir, f"{lang}.json"), m)
 
 
-def scan_ui_keys(paths: List[str]) -> Set[str]:
-  """Scan HTML files for data-i18n attributes"""
-  keys: Set[str] = set()
-  for p in paths:
-    path = Path(p)
-    if path.is_dir():
-      htmls = list(path.rglob("*.html"))
-    else:
-      htmls = [path] if path.exists() else []
-    for hp in htmls:
-      if not hp.exists() or hp.suffix.lower() != ".html":
+def _should_skip_path(path: Path, ignore_dirs: set) -> bool:
+  # Skip any path that contains an ignored dir name in its parts.
+  parts = set(path.parts)
+  return len(parts & ignore_dirs) > 0
+
+
+def iter_html_files(scan_paths: List[str], ignore_dirs: set) -> List[Path]:
+  files: List[Path] = []
+  for p in scan_paths:
+    root = Path(p)
+    if not root.exists():
+      continue
+
+    if root.is_file():
+      if root.suffix.lower() == ".html" and not _should_skip_path(root, ignore_dirs):
+        files.append(root)
+      continue
+
+    # Directory: recursively walk
+    for hp in root.rglob("*.html"):
+      if _should_skip_path(hp, ignore_dirs):
         continue
-      try:
-        text = hp.read_text(encoding="utf-8", errors="ignore")
-        for m in DATA_I18N_RE.finditer(text):
-          k = m.group(1).strip()
-          if k:
-            keys.add(k)
-      except Exception as e:
-        print(f"Warning: Failed to read {hp}: {e}")
+      files.append(hp)
+
+  # De-dup, stable order
+  uniq = sorted({f.resolve() for f in files})
+  return uniq
+
+
+def scan_ui_keys(scan_paths: List[str], ignore_dirs: set) -> Set[str]:
+  """Scan HTML files for data-i18n attributes with recursive directory support"""
+  keys: Set[str] = set()
+  html_files = iter_html_files(scan_paths, ignore_dirs)
+
+  for hp in html_files:
+    try:
+      text = hp.read_text(encoding="utf-8", errors="ignore")
+    except Exception:
+      continue
+
+    for m in DATA_I18N_RE.finditer(text):
+      k = m.group(1).strip()
+      if k:
+        keys.add(k)
+
   return keys
 
 
@@ -260,7 +295,11 @@ def cmd_scan_ui(args):
   for _, m in i18n_maps.items():
     all_i18n_keys |= set(m.keys())
 
-  ui_keys = scan_ui_keys(args.scan_paths)
+  ignore_dirs = set(DEFAULT_IGNORE_DIRS)
+  if getattr(args, "ignore", None):
+    ignore_dirs |= set(args.ignore)
+
+  ui_keys = scan_ui_keys(args.scan_paths, ignore_dirs)
   ui_g_keys = {k for k in ui_keys if k.startswith("g.")}
 
   ui_missing_in_nodes = sorted([k for k in ui_g_keys if k not in node_keys])
@@ -327,6 +366,7 @@ def main():
   p5.add_argument("--nodes", required=True)
   p5.add_argument("--i18n-dir", required=True)
   p5.add_argument("--scan-paths", nargs="+", required=True)
+  p5.add_argument("--ignore", nargs="*", default=[], help="Directory names to ignore during recursive scan.")
   p5.add_argument("--report-dir", required=True)
   p5.set_defaults(func=cmd_scan_ui)
 
