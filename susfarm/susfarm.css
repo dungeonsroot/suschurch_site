@@ -230,6 +230,172 @@
   background: #cc0000;
 }
 
+/* Field Panel */
+.susfarm-field-panel {
+  background: rgba(0, 0, 0, 0.9);
+  border: 2px solid var(--color-green);
+  padding: 1rem;
+  margin: 1rem 0;
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+
+.field-header {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(0, 255, 0, 0.3);
+}
+
+.field-header-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin: 1rem 0;
+  min-height: 120px;
+}
+
+.field-cell {
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--color-green);
+  padding: 0.75rem;
+  text-align: center;
+  cursor: pointer;
+  font-family: monospace;
+  font-size: 1.1rem;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  min-height: 60px;
+}
+
+.field-cell:hover {
+  background: rgba(0, 255, 0, 0.1);
+  border-color: var(--color-pink);
+}
+
+.field-cell.ready {
+  border-color: var(--color-pink);
+  animation: pulse 2s infinite;
+}
+
+.field-cell.occupied {
+  border-width: 2px;
+}
+
+.field-plot-id {
+  font-size: 0.7rem;
+  opacity: 0.7;
+}
+
+.field-plot-visual {
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.field-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(0, 255, 0, 0.3);
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+.field-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Plot Inspector */
+.plot-inspector {
+  position: fixed;
+  top: 50%;
+  right: 2rem;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.95);
+  border: 2px solid var(--color-green);
+  padding: 1rem;
+  min-width: 280px;
+  max-width: 320px;
+  font-family: monospace;
+  font-size: 0.9rem;
+  z-index: 1000;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+}
+
+.inspector-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(0, 255, 0, 0.3);
+}
+
+.inspector-close {
+  background: transparent;
+  border: none;
+  color: var(--color-green);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.inspector-close:hover {
+  color: var(--color-pink);
+}
+
+.inspector-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.inspector-info {
+  line-height: 1.8;
+}
+
+.inspector-info div {
+  margin: 0.25rem 0;
+}
+
+.inspector-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.inspector-actions .btn,
+.inspector-actions .btn-small {
+  width: 100%;
+}
+
+.inspector-actions .crop-select {
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
 /* Responsive */
 @media (max-width: 600px) {
   .plots-container,
@@ -244,6 +410,17 @@
   
   .hud-item {
     flex: 1 1 50%;
+  }
+  
+  .field-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .plot-inspector {
+    right: 0.5rem;
+    left: 0.5rem;
+    max-width: none;
+    transform: translateY(-50%);
   }
 }
 

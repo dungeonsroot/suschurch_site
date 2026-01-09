@@ -1765,6 +1765,132 @@
         "susfarm"
       ],
       "notes": ""
+    },
+    {
+      "key": "g.susfarm.field.title",
+      "grammar": "[SUSFARM::FIELD::TITLE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.field.legend",
+      "grammar": "[SUSFARM::FIELD::LEGEND]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.field.season",
+      "grammar": "[SUSFARM::FIELD::SEASON]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.field.tick",
+      "grammar": "[SUSFARM::FIELD::TICK]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.field.legend.empty",
+      "grammar": "[SUSFARM::FIELD::LEGEND::EMPTY]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.field.legend.seed",
+      "grammar": "[SUSFARM::FIELD::LEGEND::SEED]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.field.legend.grow",
+      "grammar": "[SUSFARM::FIELD::LEGEND::GROW]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.field.legend.ready",
+      "grammar": "[SUSFARM::FIELD::LEGEND::READY]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.field.legend.risk",
+      "grammar": "[SUSFARM::FIELD::LEGEND::RISK]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.field.legend.buff",
+      "grammar": "[SUSFARM::FIELD::LEGEND::BUFF]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.plot.inspector.title",
+      "grammar": "[SUSFARM::PLOT::INSPECTOR::TITLE]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.plot.inspector.empty",
+      "grammar": "[SUSFARM::PLOT::INSPECTOR::EMPTY]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.plot.inspector.no_buffs",
+      "grammar": "[SUSFARM::PLOT::INSPECTOR::NO_BUFFS]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.plot.inspector.buffs",
+      "grammar": "[SUSFARM::PLOT::INSPECTOR::BUFFS]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
     }
   ]
 }

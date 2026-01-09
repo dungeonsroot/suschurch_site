@@ -56,6 +56,39 @@
       </div>
     </div>
     
+    <!-- Field Panel (Always Visible) -->
+    <section id="susfarm-field" class="susfarm-field-panel">
+      <div class="field-header">
+        <div class="field-header-item">
+          <span>🧭</span>
+          <span data-i18n="g.susfarm.field.season">Season</span>: <span id="fieldSeason">-</span>
+        </div>
+        <div class="field-header-item">
+          <span>⏳</span>
+          <span data-i18n="g.susfarm.field.tick">Tick</span>: <span id="fieldTick">00:00</span>
+        </div>
+      </div>
+      <div id="fieldGrid" class="field-grid"></div>
+      <div class="field-legend">
+        <span data-i18n="g.susfarm.field.legend">Legend</span>: 
+        <span>⬜ <span data-i18n="g.susfarm.field.legend.empty">empty</span></span>
+        <span>🌱 <span data-i18n="g.susfarm.field.legend.seed">seed</span></span>
+        <span>🌿 <span data-i18n="g.susfarm.field.legend.grow">grow</span></span>
+        <span>🍀 <span data-i18n="g.susfarm.field.legend.ready">ready</span></span>
+        <span>🫨 <span data-i18n="g.susfarm.field.legend.risk">risk</span></span>
+        <span>🔥 <span data-i18n="g.susfarm.field.legend.buff">buff</span></span>
+      </div>
+    </section>
+    
+    <!-- Plot Inspector (Floating Panel) -->
+    <div id="plotInspector" class="plot-inspector" style="display: none;">
+      <div class="inspector-header">
+        <strong id="inspectorTitle" data-i18n="g.susfarm.plot.inspector.title">Plot</strong>
+        <button class="inspector-close" onclick="window.closePlotInspector()">×</button>
+      </div>
+      <div id="inspectorContent" class="inspector-content"></div>
+    </div>
+    
     <!-- Tabs -->
     <div class="susfarm-tabs">
       <button class="tab-btn active" data-tab="plots" data-i18n="g.susfarm.tab.plant">Plant</button>

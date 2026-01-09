@@ -26,6 +26,54 @@ function t(key, vars = {}) {
   return str;
 }
 
+// Crop emoji mapping
+const CROP_EMOJI = {
+  'lungroot': '🫁',
+  'heartbean': '🫀',
+  'brainmint': '🧠',
+  'bonegrain': '🦴',
+  'bloodberry': '🩸',
+  'eyeseed': '👁️'
+};
+
+// Plot to visual string (state → emoji)
+function plotToVisual(plot, globalBuffs) {
+  if (!plot || !plot.cropKey) {
+    return '⬜';
+  }
+  
+  const cropEmoji = CROP_EMOJI[plot.cropKey] || '⬜';
+  let stageEmoji = '🌱';
+  
+  if (plot.stage === 'grow') {
+    stageEmoji = '🌿';
+  } else if (plot.stage === 'ready') {
+    stageEmoji = '🍀';
+  }
+  
+  // Check wither risk (bonegrain)
+  const crop = window.SUSFARM_DATA?.crops[plot.cropKey];
+  if (crop && crop.special?.type === 'wither' && plot.stage === 'grow' && plot.remainingSeconds > 0) {
+    stageEmoji += '🫨';
+  }
+  
+  // Check active buffs affecting this plot
+  if (globalBuffs && globalBuffs.length > 0) {
+    const hasBuff = globalBuffs.some(buff => {
+      // heart_surge affects growth speed
+      if (buff.id === 'heart_surge') return true;
+      // womb_reactor adds temp plot
+      if (buff.id === 'womb_reactor') return true;
+      return false;
+    });
+    if (hasBuff) {
+      stageEmoji += '🔥';
+    }
+  }
+  
+  return cropEmoji + stageEmoji;
+}
+
 // Update HUD
 function updateHUD() {
   const state = window.SUSFARM_STATE?.getState();
@@ -430,9 +478,198 @@ function renderMarket() {
   container.appendChild(logDiv);
 }
 
+// Render field grid
+function renderFieldGrid() {
+  const container = document.getElementById('fieldGrid');
+  if (!container) return;
+  
+  const state = window.SUSFARM_STATE?.getState();
+  if (!state) return;
+  
+  container.innerHTML = '';
+  
+  // Calculate grid dimensions (3 columns, expand with plots)
+  const cols = 3;
+  const rows = Math.ceil(state.maxPlots / cols);
+  
+  // Ensure plots array is large enough
+  while (state.plots.length < state.maxPlots) {
+    state.plots.push({
+      id: state.plots.length,
+      cropKey: null,
+      plantedAt: 0,
+      remainingSeconds: 0,
+      stage: 'empty',
+      lastTickAt: 0
+    });
+  }
+  
+  // Get global buffs
+  const globalBuffs = state.player?.buffs || [];
+  
+  // Render grid
+  for (let i = 0; i < state.maxPlots; i++) {
+    const plot = state.plots[i] || {
+      id: i,
+      cropKey: null,
+      stage: 'empty'
+    };
+    
+    const visual = plotToVisual(plot, globalBuffs);
+    const plotId = String(i + 1).padStart(2, '0');
+    
+    const cell = document.createElement('div');
+    cell.className = 'field-cell';
+    if (plot.stage === 'ready') cell.classList.add('ready');
+    if (plot.cropKey) cell.classList.add('occupied');
+    
+    cell.innerHTML = `<span class="field-plot-id">[${plotId}]</span> <span class="field-plot-visual">${visual}</span>`;
+    cell.onclick = () => openPlotInspector(i);
+    
+    container.appendChild(cell);
+  }
+  
+  // Update field header
+  const seasonEl = document.getElementById('fieldSeason');
+  if (seasonEl) {
+    const mood = state.market?.mood || 'calm';
+    const moodKey = `g.susfarm.market.mood.${mood}`;
+    seasonEl.textContent = t(moodKey);
+  }
+  
+  const tickEl = document.getElementById('fieldTick');
+  if (tickEl) {
+    const now = Date.now();
+    const lastTick = state.lastTickAt || now;
+    const nextTickMs = 60 * 1000 - (now - lastTick);
+    const nextTickSec = Math.max(0, Math.floor(nextTickMs / 1000));
+    tickEl.textContent = formatTime(nextTickSec);
+  }
+}
+
+// Open plot inspector
+function openPlotInspector(plotIndex) {
+  const inspector = document.getElementById('plotInspector');
+  const content = document.getElementById('inspectorContent');
+  const title = document.getElementById('inspectorTitle');
+  
+  if (!inspector || !content || !title) return;
+  
+  const state = window.SUSFARM_STATE?.getState();
+  if (!state || plotIndex < 0 || plotIndex >= state.plots.length) return;
+  
+  const plot = state.plots[plotIndex];
+  if (!plot) return;
+  
+  title.textContent = `${t('g.susfarm.plot.inspector.title')} #${plotIndex + 1}`;
+  
+  if (!plot.cropKey) {
+    content.innerHTML = `
+      <div class="inspector-info">
+        <div>${t('g.susfarm.plot.inspector.empty')}</div>
+      </div>
+      <div class="inspector-actions">
+        <select id="inspectorCropSelect" class="crop-select">
+    `;
+    
+    Object.values(window.SUSFARM_DATA?.crops || {}).forEach(crop => {
+      const cropName = t(crop.nameKey);
+      content.querySelector('#inspectorCropSelect').innerHTML += 
+        `<option value="${crop.key}">${crop.emoji} ${cropName} (${crop.seedCost}💰)</option>`;
+    });
+    
+    content.innerHTML += `
+        </select>
+        <button class="btn" onclick="window.plantPlotFromInspector(${plotIndex})">${t('g.susfarm.action.plant')}</button>
+      </div>
+    `;
+  } else {
+    const crop = window.SUSFARM_DATA?.crops[plot.cropKey];
+    if (!crop) return;
+    
+    const cropName = t(crop.nameKey);
+    const stageKey = `g.susfarm.stage.${plot.stage}`;
+    const stageName = t(stageKey);
+    
+    let yieldAmount = crop.baseYield;
+    if (state.buffs.yieldPercent > 0) {
+      yieldAmount = Math.floor(yieldAmount * (1 + state.buffs.yieldPercent / 100));
+    }
+    
+    // Check active buffs
+    const activeBuffs = (state.player?.buffs || []).filter(b => {
+      const now = Date.now();
+      return now < b.endsAt;
+    });
+    
+    let buffsText = '';
+    if (activeBuffs.length > 0) {
+      buffsText = activeBuffs.map(b => {
+        const buffDef = window.SUSFARM_DATA?.buffs[b.id];
+        if (buffDef) {
+          return `${t(buffDef.nameKey)} (${b.stacks}x)`;
+        }
+        return '';
+      }).filter(Boolean).join(', ');
+    } else {
+      buffsText = t('g.susfarm.plot.inspector.no_buffs');
+    }
+    
+    content.innerHTML = `
+      <div class="inspector-info">
+        <div><strong>${crop.emoji} ${cropName}</strong></div>
+        <div><strong>${t('g.susfarm.plot.stage')}:</strong> ${stageName}</div>
+        <div><strong>${t('g.susfarm.plot.time')}:</strong> ${formatTime(plot.remainingSeconds)}</div>
+        <div><strong>${t('g.susfarm.plot.yield')}:</strong> +${yieldAmount} 💰</div>
+        <div><strong>${t('g.susfarm.plot.inspector.buffs')}:</strong> ${buffsText}</div>
+      </div>
+      <div class="inspector-actions">
+    `;
+    
+    if (plot.stage !== 'ready') {
+      content.innerHTML += `
+        <button class="btn-small" onclick="window.waterPlot(${plotIndex}); window.closePlotInspector();">${t('g.susfarm.action.water')} 5💰</button>
+        <button class="btn-small" onclick="window.boostPlot(${plotIndex}); window.closePlotInspector();">${t('g.susfarm.action.boost')} 20💰</button>
+      `;
+    }
+    
+    if (plot.stage === 'ready') {
+      content.innerHTML += `
+        <button class="btn-small btn-harvest" onclick="window.harvestPlot(${plotIndex}); window.closePlotInspector();">${t('g.susfarm.action.harvest')}</button>
+      `;
+    }
+    
+    content.innerHTML += `</div>`;
+  }
+  
+  inspector.style.display = 'block';
+}
+
+// Close plot inspector
+window.closePlotInspector = function() {
+  const inspector = document.getElementById('plotInspector');
+  if (inspector) {
+    inspector.style.display = 'none';
+  }
+};
+
+// Plant from inspector
+window.plantPlotFromInspector = function(plotIndex) {
+  const select = document.getElementById('inspectorCropSelect');
+  if (!select) return;
+  const cropKey = select.value;
+  if (window.SUSFARM_STATE?.plantCrop(plotIndex, cropKey)) {
+    window.closePlotInspector();
+    updateSusFarmUI();
+  } else {
+    alert('Failed to plant. Check if you have enough coins.');
+  }
+};
+
 // Update all UI
 function updateSusFarmUI() {
   updateHUD();
+  renderFieldGrid(); // Always render field grid
   
   if (currentTab === 'plots') renderPlots();
   else if (currentTab === 'upgrade') renderUpgrades();
@@ -578,9 +815,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initial render
   updateSusFarmUI();
   
-  // Update HUD every second for countdown
+  // Update HUD and field grid every second for countdown
   setInterval(() => {
     updateHUD();
+    renderFieldGrid(); // Update field grid countdown
     if (currentTab === 'market') {
       const state = window.SUSFARM_STATE?.getState();
       if (state) {

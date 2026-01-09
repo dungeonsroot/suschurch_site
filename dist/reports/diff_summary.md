@@ -1,6 +1,6 @@
 # Grammar ↔ i18n Validation Report
 
-- Node keys: 196
+- Node keys: 210
 - Orphan keys: 0
 
 ## Missing keys by language
