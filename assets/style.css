@@ -68,8 +68,8 @@ header {
 }
 
 .lang-select select:focus-visible {
-  outline: 2px solid var(--color-green);
-  outline-offset: 2px;
+  outline: none;
+  border: 1px solid var(--color-green);
 }
 
 /* Ticker - CSS animated (replaces marquee) */
@@ -220,8 +220,8 @@ h2, h3 {
 }
 
 .terminal-input:focus-visible {
-  outline: 2px solid var(--color-green);
-  outline-offset: 2px;
+  outline: none;
+  border: 1px solid var(--color-green);
 }
 
 .terminal-hint {
@@ -256,7 +256,7 @@ button,
   background: var(--color-bg);
   color: var(--color-green);
   border: 2px solid var(--color-green);
-  padding: 0.75rem 1rem;
+  padding: 0.5rem 0.75rem;
   font-family: monospace;
   font-size: 0.9rem;
   cursor: pointer;

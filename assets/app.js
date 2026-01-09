@@ -119,7 +119,6 @@ function addLog(text, type = 'output') {
   
   const line = document.createElement('div');
   line.className = `terminal-line ${type}`;
-  line.textContent = text;
   
   termOut.appendChild(line);
   terminalLineCount++;
@@ -133,8 +132,23 @@ function addLog(text, type = 'output') {
     }
   }
   
-  // Scroll to bottom
-  termOut.scrollTop = termOut.scrollHeight;
+  // Typewriter effect: delay 2-5 seconds, then type one character at a time
+  const delay = 2000 + Math.random() * 3000; // 2-5 seconds
+  const chars = text.split('');
+  let charIndex = 0;
+  
+  setTimeout(() => {
+    const typeInterval = setInterval(() => {
+      if (charIndex < chars.length) {
+        line.textContent += chars[charIndex];
+        charIndex++;
+        // Scroll to bottom during typing
+        termOut.scrollTop = termOut.scrollHeight;
+      } else {
+        clearInterval(typeInterval);
+      }
+    }, 30); // ~33 chars per second typing speed
+  }, delay);
 }
 
 // Terminal command processing
