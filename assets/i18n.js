@@ -302,25 +302,12 @@ const I18N = {
   }
 };
 
-// Get translation by key path
+// Get translation by key (flat key, no dot traversal)
 function t(key, lang) {
   if (!key) return '';
   const targetLang = lang || currentLang || 'en';
-  if (!I18N[targetLang]) {
-    console.warn('I18N: Language not found:', targetLang);
-    return key;
-  }
-  const keys = key.split('.');
-  let value = I18N[targetLang];
-  for (const k of keys) {
-    if (value && typeof value === 'object' && k in value) {
-      value = value[k];
-    } else {
-      console.warn('I18N: Key not found:', key, 'in language:', targetLang);
-      return key; // fallback to key if not found
-    }
-  }
-  return (typeof value === 'string' ? value : key);
+  const dict = I18N[targetLang] || I18N.en || {};
+  return dict[key] ?? key;
 }
 
 // Replace placeholders like {var} in translation string
@@ -332,46 +319,28 @@ function tReplace(str, vars) {
 
 // Apply language to all elements with data-i18n
 function applyLang(lang) {
-  if (!lang || !I18N[lang]) {
-    console.error('I18N: Invalid language:', lang);
-    lang = 'en';
-  }
   currentLang = lang;
-  window.currentLang = currentLang; // Update global reference
+  window.currentLang = currentLang;
   document.documentElement.lang = lang;
-  
-  const elements = document.querySelectorAll('[data-i18n]');
-  if (elements.length === 0) {
-    console.warn('I18N: No elements with data-i18n found');
-  }
-  
-  elements.forEach(el => {
+
+  document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
-    if (key) {
-      const translation = t(key, lang);
-      if (translation && translation !== key) {
-        el.textContent = translation;
-      }
-    }
+    el.textContent = t(key, lang);
   });
-  
+
   document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
     const key = el.getAttribute('data-i18n-placeholder');
-    const translation = t(key, lang);
-    el.placeholder = translation;
+    el.placeholder = t(key, lang);
   });
-  
-  // Update title
+
   document.title = t('title', lang);
-  
-  // Save to localStorage
+
   try {
     localStorage.setItem('sus_lang', lang);
   } catch (e) {
     // ignore
   }
-  
-  // Trigger update event for other scripts
+
   window.dispatchEvent(new CustomEvent('langChanged', { detail: { lang } }));
 }
 
@@ -386,35 +355,14 @@ try {
   // ignore
 }
 
-// Apply language on load - ensure DOM is ready
-function initI18n() {
-  function doApply() {
-    try {
-      applyLang(currentLang);
-      // Also update select option
-      const langSelect = document.getElementById('langSelect');
-      if (langSelect) {
-        langSelect.value = currentLang;
-      }
-    } catch (e) {
-      console.error('I18N initialization error:', e);
-    }
-  }
-  
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', doApply);
-  } else {
-    // DOM already loaded, apply immediately but with a small delay to ensure all scripts loaded
-    if (window.requestAnimationFrame) {
-      requestAnimationFrame(doApply);
-    } else {
-      setTimeout(doApply, 10);
-    }
-  }
-}
-
-// Initialize
-initI18n();
+// Initialize on DOM ready
+document.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('sus_lang');
+  const lang = (saved && I18N[saved]) ? saved : 'en';
+  const sel = document.getElementById('langSelect');
+  if (sel) sel.value = lang;
+  applyLang(lang);
+});
 
 // Expose functions and variables globally for use in other scripts
 window.I18N = I18N;
