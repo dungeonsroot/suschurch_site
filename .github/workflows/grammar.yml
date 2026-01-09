@@ -1,0 +1,27 @@
+name: Grammar ↔ i18n Gates
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  grammar-gates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Build reports
+        run: |
+          python tools/grammar_i18n_compiler.py validate --nodes grammar/nodes.json --i18n-dir i18n --report-dir dist/reports
+          python tools/grammar_i18n_compiler.py scan-ui --nodes grammar/nodes.json --i18n-dir i18n --scan-paths index.html --report-dir dist/reports
+
+      - name: Enforce gates
+        run: |
+          python tools/ci_gate.py
+

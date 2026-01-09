@@ -1,0 +1,12 @@
+{
+  "version": "grammar-i18n-compiler/1.0",
+  "count": 6,
+  "keys": [
+    "g.confess.input.placeholder",
+    "g.rite.baptism.toast.success",
+    "g.site.fundraising.toast.copied",
+    "g.site.fundraising.toast.failed",
+    "g.term.banner.welcome",
+    "g.term.input.placeholder"
+  ]
+}

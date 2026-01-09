@@ -4,11 +4,15 @@
 import argparse
 import json
 import os
+import re
 from dataclasses import dataclass, asdict
+from pathlib import Path
 from typing import Dict, List, Tuple, Set
 
 
 VERSION = "grammar-i18n-compiler/1.0"
+
+DATA_I18N_RE = re.compile(r'''data-i18n\s*=\s*["']([^"']+)["']''', re.IGNORECASE)
 
 
 @dataclass
@@ -223,6 +227,74 @@ def cmd_patch(args):
     write_json(os.path.join(args.out_dir, f"{lang}.json"), m)
 
 
+def scan_ui_keys(paths: List[str]) -> Set[str]:
+  """Scan HTML files for data-i18n attributes"""
+  keys: Set[str] = set()
+  for p in paths:
+    path = Path(p)
+    if path.is_dir():
+      htmls = list(path.rglob("*.html"))
+    else:
+      htmls = [path] if path.exists() else []
+    for hp in htmls:
+      if not hp.exists() or hp.suffix.lower() != ".html":
+        continue
+      try:
+        text = hp.read_text(encoding="utf-8", errors="ignore")
+        for m in DATA_I18N_RE.finditer(text):
+          k = m.group(1).strip()
+          if k:
+            keys.add(k)
+      except Exception as e:
+        print(f"Warning: Failed to read {hp}: {e}")
+  return keys
+
+
+def cmd_scan_ui(args):
+  nodes_obj = read_json(args.nodes)
+  nodes = [Node(**n) for n in nodes_obj.get("nodes", [])]
+  node_keys = {n.key for n in nodes}
+
+  i18n_maps = read_i18n_dir(args.i18n_dir)
+  all_i18n_keys = set()
+  for _, m in i18n_maps.items():
+    all_i18n_keys |= set(m.keys())
+
+  ui_keys = scan_ui_keys(args.scan_paths)
+  ui_g_keys = {k for k in ui_keys if k.startswith("g.")}
+
+  ui_missing_in_nodes = sorted([k for k in ui_g_keys if k not in node_keys])
+  nodes_unused_in_ui = sorted([k for k in node_keys if k not in ui_g_keys])
+
+  legacy_orphan = sorted([
+    k for k in all_i18n_keys
+    if k.startswith("g.") and k not in node_keys and k not in ui_g_keys
+  ])
+
+  os.makedirs(args.report_dir, exist_ok=True)
+  write_json(os.path.join(args.report_dir, "ui_keys.json"), {
+    "version": VERSION,
+    "count": len(ui_keys),
+    "g_count": len(ui_g_keys),
+    "keys": sorted(ui_keys),
+  })
+  write_json(os.path.join(args.report_dir, "ui_missing_in_nodes.json"), {
+    "version": VERSION,
+    "count": len(ui_missing_in_nodes),
+    "keys": ui_missing_in_nodes,
+  })
+  write_json(os.path.join(args.report_dir, "nodes_unused_in_ui.json"), {
+    "version": VERSION,
+    "count": len(nodes_unused_in_ui),
+    "keys": nodes_unused_in_ui,
+  })
+  write_json(os.path.join(args.report_dir, "legacy_orphan_keys.json"), {
+    "version": VERSION,
+    "count": len(legacy_orphan),
+    "keys": legacy_orphan,
+  })
+
+
 def main():
   ap = argparse.ArgumentParser(prog="grammar_i18n_compiler")
   sub = ap.add_subparsers(dest="cmd", required=True)
@@ -250,6 +322,13 @@ def main():
   p4.add_argument("--base-lang", required=True)
   p4.add_argument("--out-dir", required=True)
   p4.set_defaults(func=cmd_patch)
+
+  p5 = sub.add_parser("scan-ui")
+  p5.add_argument("--nodes", required=True)
+  p5.add_argument("--i18n-dir", required=True)
+  p5.add_argument("--scan-paths", nargs="+", required=True)
+  p5.add_argument("--report-dir", required=True)
+  p5.set_defaults(func=cmd_scan_ui)
 
   args = ap.parse_args()
   args.func(args)
