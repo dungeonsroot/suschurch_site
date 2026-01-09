@@ -729,14 +729,26 @@ function switchTab(tab) {
     if (btn.dataset.tab === tab) btn.classList.add('active');
   });
   
-  // Update tab content
+  // Update tab content visibility
   document.querySelectorAll('.tab-content').forEach(content => {
     content.classList.remove('active');
-    if (content.id === `tab${tab.charAt(0).toUpperCase() + tab.slice(1)}`) {
-      content.classList.add('active');
-    }
   });
   
+  // Show the selected tab content
+  const tabIdMap = {
+    'plots': 'tabPlots',
+    'upgrade': 'tabUpgrade',
+    'market': 'tabMarket',
+    'rites': 'tabRites',
+    'log': 'tabLog'
+  };
+  
+  const targetContent = document.getElementById(tabIdMap[tab]);
+  if (targetContent) {
+    targetContent.classList.add('active');
+  }
+  
+  // Update UI to render the selected tab content
   updateSusFarmUI();
 }
 
@@ -883,4 +895,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Export for state.js
 window.updateSusFarmUI = updateSusFarmUI;
+window.switchTab = switchTab;
 
