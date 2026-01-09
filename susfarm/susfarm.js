@@ -697,24 +697,49 @@ window.closePlotInspector = function() {
 // Plant from inspector
 window.plantPlotFromInspector = function(plotIndex) {
   const select = document.getElementById('inspectorCropSelect');
-  if (!select) return;
+  if (!select) {
+    console.error('Inspector crop select not found');
+    return;
+  }
   const cropKey = select.value;
+  if (!cropKey) {
+    console.error('No crop selected in inspector');
+    return;
+  }
+  
+  // Check wallet first
+  const crop = window.SUSFARM_DATA?.crops[cropKey];
+  if (!crop) {
+    console.error('Crop not found:', cropKey);
+    return;
+  }
+  
+  const wallet = window.SUS_WALLET?.get() || 0;
+  if (wallet < crop.seedCost) {
+    alert(`Not enough coins. Need ${crop.seedCost}💰, have ${wallet}💰`);
+    updateHUD(); // Update to show current balance
+    return;
+  }
+  
   if (window.SUSFARM_STATE?.plantCrop(plotIndex, cropKey)) {
     window.closePlotInspector();
     updateSusFarmUI();
   } else {
     alert('Failed to plant. Check if you have enough coins.');
+    updateHUD(); // Update to show current balance
   }
 };
 
 // Update all UI
 function updateSusFarmUI() {
+  // Always update HUD first to sync money
   updateHUD();
   renderFieldGrid(); // Always render field grid
   
   if (currentTab === 'plots') renderPlots();
   else if (currentTab === 'upgrade') renderUpgrades();
   else if (currentTab === 'market') renderMarket();
+  else if (currentTab === 'consume') renderConsume();
   else if (currentTab === 'rites') renderRites();
   else if (currentTab === 'log') renderLog();
 }
@@ -755,28 +780,65 @@ function switchTab(tab) {
 // Action handlers
 window.plantPlot = function(plotIndex) {
   const select = document.getElementById(`cropSelect${plotIndex}`);
-  if (!select) return;
+  if (!select) {
+    console.error('Crop select not found for plot', plotIndex);
+    return;
+  }
   const cropKey = select.value;
+  if (!cropKey) {
+    console.error('No crop selected');
+    return;
+  }
+  
+  // Check wallet first
+  const crop = window.SUSFARM_DATA?.crops[cropKey];
+  if (!crop) {
+    console.error('Crop not found:', cropKey);
+    return;
+  }
+  
+  const wallet = window.SUS_WALLET?.get() || 0;
+  if (wallet < crop.seedCost) {
+    alert(`Not enough coins. Need ${crop.seedCost}💰, have ${wallet}💰`);
+    updateHUD(); // Update to show current balance
+    return;
+  }
+  
   if (window.SUSFARM_STATE?.plantCrop(plotIndex, cropKey)) {
     updateSusFarmUI();
   } else {
     alert('Failed to plant. Check if you have enough coins.');
+    updateHUD(); // Update to show current balance
   }
 };
 
 window.waterPlot = function(plotIndex) {
+  const wallet = window.SUS_WALLET?.get() || 0;
+  if (wallet < 5) {
+    alert(`Not enough coins. Need 5💰, have ${wallet}💰`);
+    updateHUD();
+    return;
+  }
   if (window.SUSFARM_STATE?.waterPlot(plotIndex)) {
     updateSusFarmUI();
   } else {
     alert('Failed to water. Check if you have enough coins.');
+    updateHUD();
   }
 };
 
 window.boostPlot = function(plotIndex) {
+  const wallet = window.SUS_WALLET?.get() || 0;
+  if (wallet < 20) {
+    alert(`Not enough coins. Need 20💰, have ${wallet}💰`);
+    updateHUD();
+    return;
+  }
   if (window.SUSFARM_STATE?.boostPlot(plotIndex)) {
     updateSusFarmUI();
   } else {
     alert('Failed to boost. Check if you have enough coins.');
+    updateHUD();
   }
 };
 
@@ -855,10 +917,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
   
-  // Wallet change listener
+  // Wallet change listener - update HUD immediately
   window.addEventListener('walletChanged', () => {
-    updateSusFarmUI();
+    updateHUD(); // Update HUD immediately for money sync
+    updateSusFarmUI(); // Then update full UI
   });
+  
+  // Also update HUD periodically to catch any wallet changes
+  setInterval(() => {
+    updateHUD();
+  }, 500); // Update every 500ms for better responsiveness
   
   // Language change listener
   window.addEventListener('langChanged', () => {
