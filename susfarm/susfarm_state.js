@@ -5,7 +5,7 @@ const TICK_INTERVAL = 60; // 60 seconds
 const MARKET_REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes
 
 const DEFAULT_STATE = {
-  version: 2, // Bump version for new structure
+  version: 3, // Bump version for atmosphere system
   plots: [],
   maxPlots: 6,
   upgrades: {
@@ -18,6 +18,13 @@ const DEFAULT_STATE = {
     yieldPercentExpiry: 0,
     witherReduction: 0,
     witherReductionExpiry: 0
+  },
+  // New: field atmosphere system
+  fieldAtmo: {
+    current: 'day', // dawn, day, dusk, night, anomaly
+    cycleTick: 0, // ticks until next cycle
+    anomalyActive: false,
+    anomalyEndsAt: 0
   },
   // New: inventory as {key: count}
   inventory: {},
@@ -192,6 +199,53 @@ function processTick(tickTime, isOffline = false) {
     farmState.buffs.witherReductionExpiry = 0;
   }
   
+  // Process atmosphere cycle
+  if (!farmState.fieldAtmo) {
+    farmState.fieldAtmo = {
+      current: 'day',
+      cycleTick: 0,
+      anomalyActive: false,
+      anomalyEndsAt: 0
+    };
+  }
+  
+  // Check if anomaly is active
+  if (farmState.fieldAtmo.anomalyActive && now >= farmState.fieldAtmo.anomalyEndsAt) {
+    farmState.fieldAtmo.anomalyActive = false;
+    farmState.fieldAtmo.anomalyEndsAt = 0;
+    // Return to previous cycle (default to day)
+    if (!['dawn', 'day', 'dusk', 'night'].includes(farmState.fieldAtmo.current)) {
+      farmState.fieldAtmo.current = 'day';
+    }
+  }
+  
+  // Cycle atmosphere (every 5-7 ticks, ~5-7 minutes)
+  if (!farmState.fieldAtmo.anomalyActive) {
+    farmState.fieldAtmo.cycleTick = (farmState.fieldAtmo.cycleTick || 0) + 1;
+    
+    // Roll for anomaly (5% chance every cycle)
+    if (farmState.fieldAtmo.cycleTick >= 5) {
+      const seed = Math.floor(tickTime / 1000) + 9999;
+      const roll = seededRandom(seed);
+      
+      if (roll < 0.05) {
+        // Anomaly triggered!
+        farmState.fieldAtmo.anomalyActive = true;
+        farmState.fieldAtmo.current = 'anomaly';
+        farmState.fieldAtmo.anomalyEndsAt = now + (10 * 60 * 1000); // 10 minutes
+        farmState.fieldAtmo.cycleTick = 0;
+        addLog('anomaly_start', {});
+      } else if (farmState.fieldAtmo.cycleTick >= 7) {
+        // Normal cycle: dawn -> day -> dusk -> night
+        const cycle = ['dawn', 'day', 'dusk', 'night'];
+        const currentIndex = cycle.indexOf(farmState.fieldAtmo.current);
+        const nextIndex = (currentIndex + 1) % cycle.length;
+        farmState.fieldAtmo.current = cycle[nextIndex];
+        farmState.fieldAtmo.cycleTick = 0;
+      }
+    }
+  }
+  
   // Process each plot
   farmState.plots.forEach((plot, index) => {
     if (!plot.cropKey) return;
@@ -206,6 +260,15 @@ function processTick(tickTime, isOffline = false) {
       growthMultiplier += heartSurge.stacks * (window.SUSFARM_DATA?.buffs.heart_surge.effects.growthSpeedMultiplier || 0);
     }
     
+    // Apply atmosphere modifiers
+    if (farmState.fieldAtmo.current === 'dawn') {
+      growthMultiplier *= 1.1; // +10% growth speed
+    } else if (farmState.fieldAtmo.current === 'night') {
+      // Night increases wither risk (handled below)
+    } else if (farmState.fieldAtmo.current === 'anomaly') {
+      // Anomaly affects yield (handled in harvest)
+    }
+    
     // Apply anomaly (nullfield_freeze reduces growth)
     if (farmState.player.anomaly.active?.id === 'nullfield_freeze') {
       growthMultiplier += window.SUSFARM_DATA?.anomalies.nullfield_freeze.effects.growthSpeedReduction || 0;
@@ -218,9 +281,21 @@ function processTick(tickTime, isOffline = false) {
       
       // Check for wither (bonegrain)
       if (crop.special?.type === 'wither' && plot.stage === 'grow') {
+        let witherChance = crop.special.chance;
+        
+        // Night increases wither risk
+        if (farmState.fieldAtmo.current === 'night') {
+          witherChance += 0.05;
+        }
+        
+        // Anomaly increases wither risk
+        if (farmState.fieldAtmo.current === 'anomaly') {
+          witherChance *= 1.2;
+        }
+        
         const seed = Math.floor(tickTime / 1000) + plot.id;
         const roll = seededRandom(seed);
-        if (roll < crop.special.chance) {
+        if (roll < witherChance) {
           // Wither!
           plot.cropKey = null;
           plot.stage = 'empty';
@@ -355,6 +430,11 @@ function harvestPlot(plotIndex, isAuto = false) {
   let yieldAmount = crop.baseYield;
   if (farmState.buffs.yieldPercent > 0) {
     yieldAmount = Math.floor(yieldAmount * (1 + farmState.buffs.yieldPercent / 100));
+  }
+  
+  // Anomaly bonus: +30% yield
+  if (farmState.fieldAtmo?.current === 'anomaly' && farmState.fieldAtmo?.anomalyActive) {
+    yieldAmount = Math.floor(yieldAmount * 1.3);
   }
   
   // Check for crit (heartbean)

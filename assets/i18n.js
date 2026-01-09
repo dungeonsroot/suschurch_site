@@ -124,6 +124,13 @@ const I18N = {
     'g.susfarm.plot.inspector.empty': 'Empty plot',
     'g.susfarm.plot.inspector.no_buffs': 'None',
     'g.susfarm.plot.inspector.buffs': 'Buffs',
+    'g.susfarm.field.atmo.dawn': 'DAWN',
+    'g.susfarm.field.atmo.day': 'DAY',
+    'g.susfarm.field.atmo.dusk': 'DUSK',
+    'g.susfarm.field.atmo.night': 'NIGHT',
+    'g.susfarm.field.atmo.anomaly': 'ANOMALY',
+    'g.susfarm.field.legend.anomaly_ready': 'anomaly ready',
+    'g.susfarm.log.anomaly_start': 'Anomaly field activated',
     
     // Legacy keys (kept for backward compatibility during migration)
     'title': 'SUS☆CHURCH',
@@ -349,6 +356,13 @@ const I18N = {
     'g.susfarm.plot.inspector.empty': '空閒地塊',
     'g.susfarm.plot.inspector.no_buffs': '無',
     'g.susfarm.plot.inspector.buffs': '加成',
+    'g.susfarm.field.atmo.dawn': '黎明',
+    'g.susfarm.field.atmo.day': '白晝',
+    'g.susfarm.field.atmo.dusk': '黃昏',
+    'g.susfarm.field.atmo.night': '夜晚',
+    'g.susfarm.field.atmo.anomaly': '異象',
+    'g.susfarm.field.legend.anomaly_ready': '異象成熟',
+    'g.susfarm.log.anomaly_start': '異象農田已激活',
     
     // Legacy keys (kept for backward compatibility during migration)
     'title': 'SUS☆教會',
@@ -574,6 +588,13 @@ const I18N = {
     'g.susfarm.plot.inspector.empty': '空き区画',
     'g.susfarm.plot.inspector.no_buffs': 'なし',
     'g.susfarm.plot.inspector.buffs': '強化',
+    'g.susfarm.field.atmo.dawn': '夜明け',
+    'g.susfarm.field.atmo.day': '昼',
+    'g.susfarm.field.atmo.dusk': '夕暮れ',
+    'g.susfarm.field.atmo.night': '夜',
+    'g.susfarm.field.atmo.anomaly': '異象',
+    'g.susfarm.field.legend.anomaly_ready': '異象収穫可',
+    'g.susfarm.log.anomaly_start': '異象農園が活性化',
     
     // Legacy keys (kept for backward compatibility during migration)
     'title': 'SUS☆教会',

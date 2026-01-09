@@ -36,10 +36,31 @@ const CROP_EMOJI = {
   'eyeseed': '👁️'
 };
 
+// Ground emoji mapping based on atmosphere
+const GROUND_EMOJI = {
+  'dawn': '🟧',
+  'day': '🟨',
+  'dusk': '🟥',
+  'night': '🟦',
+  'anomaly': '🟪'
+};
+
+// Atmosphere icon mapping
+const ATMOSPHERE_ICON = {
+  'dawn': '🌅',
+  'day': '🌤️',
+  'dusk': '🌇',
+  'night': '🌙',
+  'anomaly': '🛸'
+};
+
 // Plot to visual string (state → emoji)
-function plotToVisual(plot, globalBuffs) {
+function plotToVisual(plot, globalBuffs, fieldAtmo) {
+  const atmo = fieldAtmo?.current || 'day';
+  const groundEmoji = GROUND_EMOJI[atmo] || '🟨';
+  
   if (!plot || !plot.cropKey) {
-    return '⬜';
+    return groundEmoji + ' ⬛';
   }
   
   const cropEmoji = CROP_EMOJI[plot.cropKey] || '⬜';
@@ -48,7 +69,12 @@ function plotToVisual(plot, globalBuffs) {
   if (plot.stage === 'grow') {
     stageEmoji = '🌿';
   } else if (plot.stage === 'ready') {
-    stageEmoji = '🍀';
+    // Anomaly special: ready → 💎
+    if (atmo === 'anomaly' && fieldAtmo?.anomalyActive) {
+      stageEmoji = '💎';
+    } else {
+      stageEmoji = '🍀';
+    }
   }
   
   // Check wither risk (bonegrain)
@@ -71,7 +97,7 @@ function plotToVisual(plot, globalBuffs) {
     }
   }
   
-  return cropEmoji + stageEmoji;
+  return groundEmoji + ' ' + cropEmoji + stageEmoji;
 }
 
 // Update HUD
@@ -327,6 +353,9 @@ function renderLog() {
       case 'blessed':
         text = `✨ ${t('g.susfarm.log.blessed')}`;
         break;
+      case 'anomaly_start':
+        text = `🛸 ${t('g.susfarm.log.anomaly_start')}`;
+        break;
       default:
         text = JSON.stringify(entry.data);
     }
@@ -506,6 +535,7 @@ function renderFieldGrid() {
   
   // Get global buffs
   const globalBuffs = state.player?.buffs || [];
+  const fieldAtmo = state.fieldAtmo || { current: 'day', anomalyActive: false };
   
   // Render grid
   for (let i = 0; i < state.maxPlots; i++) {
@@ -515,7 +545,7 @@ function renderFieldGrid() {
       stage: 'empty'
     };
     
-    const visual = plotToVisual(plot, globalBuffs);
+    const visual = plotToVisual(plot, globalBuffs, fieldAtmo);
     const plotId = String(i + 1).padStart(2, '0');
     
     const cell = document.createElement('div');
@@ -531,10 +561,21 @@ function renderFieldGrid() {
   
   // Update field header
   const seasonEl = document.getElementById('fieldSeason');
-  if (seasonEl) {
+  const atmoEl = document.getElementById('fieldAtmo');
+  if (seasonEl || atmoEl) {
     const mood = state.market?.mood || 'calm';
     const moodKey = `g.susfarm.market.mood.${mood}`;
-    seasonEl.textContent = t(moodKey);
+    if (seasonEl) seasonEl.textContent = t(moodKey);
+    
+    // Atmosphere display
+    if (atmoEl) {
+      const atmo = state.fieldAtmo?.current || 'day';
+      const atmoActive = state.fieldAtmo?.anomalyActive || false;
+      const icon = ATMOSPHERE_ICON[atmo] || '🌤️';
+      const atmoKey = `g.susfarm.field.atmo.${atmo}`;
+      const atmoLabel = t(atmoKey);
+      atmoEl.innerHTML = `${icon} <strong>${atmoLabel}</strong>`;
+    }
   }
   
   const tickEl = document.getElementById('fieldTick');

@@ -1891,6 +1891,69 @@
         "susfarm"
       ],
       "notes": ""
+    },
+    {
+      "key": "g.susfarm.field.atmo.dawn",
+      "grammar": "[SUSFARM::FIELD::ATMO::DAWN]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.field.atmo.day",
+      "grammar": "[SUSFARM::FIELD::ATMO::DAY]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.field.atmo.dusk",
+      "grammar": "[SUSFARM::FIELD::ATMO::DUSK]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.field.atmo.night",
+      "grammar": "[SUSFARM::FIELD::ATMO::NIGHT]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.field.atmo.anomaly",
+      "grammar": "[SUSFARM::FIELD::ATMO::ANOMALY]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.field.legend.anomaly_ready",
+      "grammar": "[SUSFARM::FIELD::LEGEND::ANOMALY_READY]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
+    },
+    {
+      "key": "g.susfarm.log.anomaly_start",
+      "grammar": "[SUSFARM::LOG::ANOMALY_START]",
+      "tags": [
+        "ui",
+        "susfarm"
+      ],
+      "notes": ""
     }
   ]
 }
