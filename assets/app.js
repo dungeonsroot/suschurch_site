@@ -679,23 +679,80 @@ function initTerminal() {
     selection.addRange(range);
   }
   
-  // Helper: Focus and place cursor at end
+  // Helper: Focus input and show cursor
   function focusInput() {
     termIn.focus();
-    const range = document.createRange();
-    const selection = window.getSelection();
-    range.selectNodeContents(termIn);
-    range.collapse(false);
-    selection.removeAllRanges();
-    selection.addRange(range);
+    const cursorEl = document.querySelector('.terminal-cursor');
+    if (cursorEl) {
+      cursorEl.style.display = 'inline-block';
+      cursorEl.style.opacity = '1';
+    }
+  }
+  
+  // Update cursor position and visibility
+  function updateCursor() {
+    const cursorEl = document.querySelector('.terminal-cursor');
+    if (!cursorEl) return;
+    
+    // Only show cursor when input is focused
+    if (document.activeElement !== termIn) {
+      cursorEl.style.opacity = '0';
+      return;
+    }
+    
+    // If input is empty, show cursor after prompt (fixed position)
+    if (!termIn.textContent || termIn.textContent.trim() === '') {
+      cursorEl.style.display = 'inline-block';
+      cursorEl.style.opacity = '1';
+      cursorEl.style.position = 'relative';
+      cursorEl.style.left = 'auto';
+      return;
+    }
+    
+    // If input has content, track caret position
+    try {
+      const selection = window.getSelection();
+      if (selection.rangeCount === 0) return;
+      
+      const range = selection.getRangeAt(0).cloneRange();
+      range.collapse(true);
+      
+      // Create temporary marker to measure caret position
+      const marker = document.createTextNode('\u200b');
+      range.insertNode(marker);
+      
+      const markerRect = marker.getBoundingClientRect();
+      const inputRect = termIn.getBoundingClientRect();
+      const promptRect = document.querySelector('.terminal-prompt').getBoundingClientRect();
+      const inputLineRect = termIn.closest('.terminal-input-line').getBoundingClientRect();
+      
+      // Calculate position relative to input line
+      const leftPos = markerRect.left - inputLineRect.left;
+      
+      // Position cursor at caret location
+      cursorEl.style.position = 'absolute';
+      cursorEl.style.left = leftPos + 'px';
+      cursorEl.style.top = 'auto';
+      cursorEl.style.display = 'inline-block';
+      cursorEl.style.opacity = '1';
+      
+      // Remove marker
+      marker.parentNode.removeChild(marker);
+    } catch (e) {
+      // Fallback: show cursor after prompt if positioning fails
+      cursorEl.style.position = 'relative';
+      cursorEl.style.left = 'auto';
+      cursorEl.style.opacity = '1';
+    }
   }
   
   // Click anywhere on terminal to focus input
   const terminalContainer = termIn.closest('.terminal-container');
   if (terminalContainer) {
     terminalContainer.addEventListener('click', (e) => {
-      if (e.target !== termIn && !termIn.contains(e.target)) {
+      if (e.target !== termIn && !termIn.contains(e.target) && e.target !== document.querySelector('.terminal-cursor')) {
         focusInput();
+        setTimeout(updateCursor, 0);
       }
     });
   }
@@ -704,13 +761,17 @@ function initTerminal() {
   addLog(t('terminal.welcome'), 'system');
   
   // Auto-focus on load
-  setTimeout(() => focusInput(), 100);
+  setTimeout(() => {
+    focusInput();
+    updateCursor();
+  }, 100);
   
   // Paste handler: paste as plain text only
   termIn.addEventListener('paste', (e) => {
     e.preventDefault();
     const text = e.clipboardData.getData('text/plain');
     document.execCommand('insertText', false, text);
+    setTimeout(updateCursor, 0);
   });
   
   // Command submission
@@ -723,6 +784,10 @@ function initTerminal() {
         processCommand(cmd);
         setInputText('');
         appState.terminalHistoryIndex = -1;
+        setTimeout(() => {
+          focusInput();
+          updateCursor();
+        }, 0);
       }
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
@@ -733,6 +798,7 @@ function initTerminal() {
           appState.terminalHistoryIndex--;
         }
         setInputText(appState.terminalHistory[appState.terminalHistoryIndex] || '');
+        setTimeout(updateCursor, 0);
       }
     } else if (e.key === 'ArrowDown') {
       e.preventDefault();
@@ -744,6 +810,7 @@ function initTerminal() {
           appState.terminalHistoryIndex = -1;
           setInputText('');
         }
+        setTimeout(updateCursor, 0);
       }
     } else if (e.key === 'Tab') {
       e.preventDefault();
@@ -753,23 +820,43 @@ function initTerminal() {
       const matches = commands.filter(cmd => cmd.startsWith(value));
       if (matches.length === 1) {
         setInputText(matches[0] + ' ');
+        setTimeout(updateCursor, 0);
       } else if (matches.length > 1 && value) {
         addLog('Possible commands: ' + matches.join(', '), 'system');
       }
+    } else {
+      // For all other keys, update cursor position after
+      setTimeout(updateCursor, 0);
     }
   });
   
-  // Keep cursor at end on input
+  // Update cursor on any input change
   termIn.addEventListener('input', () => {
-    // Move cursor to end after any input change
-    setTimeout(() => {
-      const range = document.createRange();
-      const selection = window.getSelection();
-      range.selectNodeContents(termIn);
-      range.collapse(false);
-      selection.removeAllRanges();
-      selection.addRange(range);
-    }, 0);
+    setTimeout(updateCursor, 0);
+  });
+  
+  // Update cursor on selection change (arrow keys, clicks, etc.)
+  document.addEventListener('selectionchange', () => {
+    if (document.activeElement === termIn) {
+      setTimeout(updateCursor, 10);
+    }
+  });
+  
+  // Update cursor on focus/blur
+  termIn.addEventListener('focus', () => {
+    setTimeout(updateCursor, 0);
+  });
+  
+  termIn.addEventListener('blur', () => {
+    const cursorEl = document.querySelector('.terminal-cursor');
+    if (cursorEl) {
+      cursorEl.style.opacity = '0';
+    }
+  });
+  
+  // Also update cursor on click within input
+  termIn.addEventListener('click', () => {
+    setTimeout(updateCursor, 0);
   });
 }
 
