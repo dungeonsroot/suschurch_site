@@ -492,18 +492,37 @@
           <div><strong>${t('g.susfarm.market.price')}:</strong> ${price} 💰 ${changeText}</div>
           ${good.edible ? `<div><strong>${t('g.susfarm.consume.title')}:</strong> ${t('g.susfarm.consume.cta')}</div>` : ''}
         </div>
-        <div class="good-actions">
+        <div class="good-actions" data-good-key="${key}">
           ${owned > 0 ? `
             ${good.basePrice > 0 ? `
-              <button class="btn-small" onclick="window.sellGoods('${key}', 1)">${t('g.susfarm.market.action.sell_one')}</button>
-              <button class="btn-small" onclick="window.sellGoods('${key}', ${owned})">${t('g.susfarm.market.action.sell_all')}</button>
+              <button class="btn-small" data-action="sell" data-count="1">${t('g.susfarm.market.action.sell_one')}</button>
+              <button class="btn-small" data-action="sell" data-count="${owned}">${t('g.susfarm.market.action.sell_all')}</button>
             ` : ''}
-            ${good.edible ? `<button class="btn-small" onclick="window.consumeGoods('${key}', 1)">${t('g.susfarm.consume.cta')}</button>` : ''}
+            ${good.edible ? `<button class="btn-small" data-action="consume" data-count="1">${t('g.susfarm.consume.cta')}</button>` : ''}
           ` : '<div class="good-empty">' + t('g.susfarm.market.no_goods') + '</div>'}
         </div>
       `;
       
       goodsList.appendChild(goodDiv);
+      
+      // Add event listeners for buttons (CSP-safe, no inline onclick)
+      const actionsDiv = goodDiv.querySelector('.good-actions');
+      if (actionsDiv && owned > 0) {
+        const buttons = actionsDiv.querySelectorAll('button[data-action]');
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const action = btn.getAttribute('data-action');
+            const count = parseInt(btn.getAttribute('data-count') || '1', 10);
+            const goodKey = actionsDiv.getAttribute('data-good-key');
+            
+            if (action === 'sell' && window.sellGoods && goodKey) {
+              window.sellGoods(goodKey, count);
+            } else if (action === 'consume' && window.consumeGoods && goodKey) {
+              window.consumeGoods(goodKey, count);
+            }
+          });
+        });
+      }
     });
     
     container.appendChild(goodsList);
