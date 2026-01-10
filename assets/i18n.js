@@ -133,6 +133,9 @@ const I18N = {
     'g.susfarm.log.anomaly_start': 'Anomaly field activated',
     'g.susfarm.market.hud.goods': 'Goods',
     'g.susfarm.market.hud.volatility': 'Volatility',
+    'g.susfarm.market.volatility.high': 'High',
+    'g.susfarm.market.volatility.medium': 'Medium',
+    'g.susfarm.market.volatility.low': 'Low',
     'g.susfarm.market.hud.refresh': 'Price refresh',
     'g.susfarm.market.hud.mood': 'Mood',
     'g.susfarm.market.hud.event': 'Event',
@@ -448,6 +451,9 @@ const I18N = {
     'g.susfarm.log.anomaly_start': '異象農田已激活',
     'g.susfarm.market.hud.goods': '商品',
     'g.susfarm.market.hud.volatility': '波動',
+    'g.susfarm.market.volatility.high': '高',
+    'g.susfarm.market.volatility.medium': '中',
+    'g.susfarm.market.volatility.low': '低',
     'g.susfarm.market.hud.refresh': '價格刷新',
     'g.susfarm.market.hud.mood': '情緒',
     'g.susfarm.market.hud.event': '事件',
@@ -763,6 +769,9 @@ const I18N = {
     'g.susfarm.log.anomaly_start': '異象農園が活性化',
     'g.susfarm.market.hud.goods': '商品',
     'g.susfarm.market.hud.volatility': '変動性',
+    'g.susfarm.market.volatility.high': '高',
+    'g.susfarm.market.volatility.medium': '中',
+    'g.susfarm.market.volatility.low': '低',
     'g.susfarm.market.hud.refresh': '価格更新',
     'g.susfarm.market.hud.mood': 'ムード',
     'g.susfarm.market.hud.event': 'イベント',
@@ -978,7 +987,8 @@ function applyLang(lang) {
     el.placeholder = t(key, lang);
   });
 
-  document.title = t('title', lang);
+  // Use new key with fallback to legacy
+  document.title = t('g.site.suschurch.title', lang) || t('title', lang);
 
   try {
     localStorage.setItem('sus_lang', lang);
@@ -1009,10 +1019,43 @@ document.addEventListener('DOMContentLoaded', () => {
   applyLang(lang);
 });
 
+// Fallback translation helper: try multiple keys, return first match
+function t2(keys, lang) {
+  if (!Array.isArray(keys) || keys.length === 0) return '';
+  const targetLang = lang || currentLang || 'en';
+  const dict = I18N[targetLang] || I18N.en || {};
+  for (const k of keys) {
+    if (dict[k] !== undefined) return dict[k];
+  }
+  // Fallback: return first key (so you can see missing)
+  return keys[0] || '';
+}
+
+// Minimal: apply i18n only inside a subtree root (instead of whole document)
+function applyLangTo(root, lang) {
+  if (!root) return;
+
+  const L = lang || currentLang || 'en';
+
+  // text nodes
+  root.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    el.textContent = t(key, L);
+  });
+
+  // placeholders (inputs/textarea)
+  root.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    el.setAttribute('placeholder', t(key, L));
+  });
+}
+
 // Expose functions and variables globally for use in other scripts
 window.I18N = I18N;
 window.t = t;
+window.t2 = t2;
 window.tReplace = tReplace;
 window.applyLang = applyLang;
+window.applyLangTo = applyLangTo;
 window.currentLang = currentLang;
 
