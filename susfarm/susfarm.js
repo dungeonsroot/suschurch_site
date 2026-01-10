@@ -41,7 +41,7 @@
     // Use window.t if available, otherwise try I18N directly
     let str = '';
     if (window.t && typeof window.t === 'function') {
-      str = window.tx(key, window.currentLang || 'en');
+      str = window.t(key, window.currentLang || 'en');
     } else if (window.I18N) {
       const lang = window.currentLang || 'en';
       const dict = window.I18N[lang] || window.I18N.en || {};
