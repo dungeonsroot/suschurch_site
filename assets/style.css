@@ -154,6 +154,12 @@ h2, h3 {
   font-family: 'Courier New', monospace;
   font-size: 0.9rem;
   line-height: 1.5;
+  margin-top: 0.5rem;
+}
+
+.terminal-container:focus-within {
+  outline: none;
+  border: 1px solid var(--color-green);
 }
 
 .terminal-output {
@@ -215,8 +221,8 @@ h2, h3 {
 
 .terminal-input {
   flex: 1;
-  outline: none;
-  border: none;
+  outline: none !important;
+  border: none !important;
   background: transparent;
   color: var(--color-green);
   font-family: monospace;
@@ -224,16 +230,25 @@ h2, h3 {
   min-width: 1ch;
   padding: 0;
   margin: 0;
+  box-shadow: none !important;
 }
 
 .terminal-input:focus {
-  outline: none;
-  border: none;
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .terminal-input:focus-visible {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.terminal-input-line:focus-within {
   outline: none;
   border: none;
+  box-shadow: none;
 }
 
 .terminal-cursor {
