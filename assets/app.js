@@ -679,80 +679,41 @@ function initTerminal() {
     selection.addRange(range);
   }
   
-  // Helper: Focus input and show cursor
+  // Helper: Place caret at end of contenteditable (like terminal behavior)
+  function placeCaretAtEnd(el) {
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    range.collapse(false);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+  }
+  
+  // Helper: Focus input and place caret at end
   function focusInput() {
     termIn.focus();
-    const cursorEl = document.querySelector('.terminal-cursor');
-    if (cursorEl) {
-      cursorEl.style.display = 'inline-block';
-      cursorEl.style.opacity = '1';
-    }
+    placeCaretAtEnd(termIn);
   }
   
-  // Update cursor position and visibility
-  function updateCursor() {
-    const cursorEl = document.querySelector('.terminal-cursor');
-    if (!cursorEl) return;
-    
-    // Only show cursor when input is focused
-    if (document.activeElement !== termIn) {
-      cursorEl.style.opacity = '0';
-      return;
-    }
-    
-    // If input is empty, show cursor after prompt (fixed position)
-    if (!termIn.textContent || termIn.textContent.trim() === '') {
-      cursorEl.style.display = 'inline-block';
-      cursorEl.style.opacity = '1';
-      cursorEl.style.position = 'relative';
-      cursorEl.style.left = 'auto';
-      return;
-    }
-    
-    // If input has content, track caret position
-    try {
-      const selection = window.getSelection();
-      if (selection.rangeCount === 0) return;
-      
-      const range = selection.getRangeAt(0).cloneRange();
-      range.collapse(true);
-      
-      // Create temporary marker to measure caret position
-      const marker = document.createTextNode('\u200b');
-      range.insertNode(marker);
-      
-      const markerRect = marker.getBoundingClientRect();
-      const inputRect = termIn.getBoundingClientRect();
-      const promptRect = document.querySelector('.terminal-prompt').getBoundingClientRect();
-      const inputLineRect = termIn.closest('.terminal-input-line').getBoundingClientRect();
-      
-      // Calculate position relative to input line
-      const leftPos = markerRect.left - inputLineRect.left;
-      
-      // Position cursor at caret location
-      cursorEl.style.position = 'absolute';
-      cursorEl.style.left = leftPos + 'px';
-      cursorEl.style.top = 'auto';
-      cursorEl.style.display = 'inline-block';
-      cursorEl.style.opacity = '1';
-      
-      // Remove marker
-      marker.parentNode.removeChild(marker);
-    } catch (e) {
-      // Fallback: show cursor after prompt if positioning fails
-      cursorEl.style.position = 'relative';
-      cursorEl.style.left = 'auto';
-      cursorEl.style.opacity = '1';
-    }
+  // Click anywhere on terminal input line to focus input
+  const inputLine = termIn.closest('.terminal-input-line');
+  if (inputLine) {
+    inputLine.addEventListener('mousedown', (e) => {
+      // 防止点到 line 但没有真正聚焦输入
+      if (e.target !== termIn && !termIn.contains(e.target)) {
+        e.preventDefault();
+        focusInput();
+      }
+    });
   }
   
-  // Click anywhere on terminal to focus input
+  // Also handle clicking on terminal container
   const terminalContainer = termIn.closest('.terminal-container');
   if (terminalContainer) {
     terminalContainer.addEventListener('click', (e) => {
-      if (e.target !== termIn && !termIn.contains(e.target) && e.target !== document.querySelector('.terminal-cursor')) {
+      // If clicking on container (but not on input itself), focus input
+      if (e.target === terminalContainer || e.target === termOut || e.target.classList.contains('terminal-divider')) {
         focusInput();
-        setTimeout(updateCursor, 0);
       }
     });
   }
@@ -760,10 +721,9 @@ function initTerminal() {
   // Initial welcome message
   addLog(t('terminal.welcome'), 'system');
   
-  // Auto-focus on load
+  // Auto-focus on load (will show native caret, hide decorator cursor)
   setTimeout(() => {
     focusInput();
-    updateCursor();
   }, 100);
   
   // Paste handler: paste as plain text only
@@ -771,7 +731,10 @@ function initTerminal() {
     e.preventDefault();
     const text = e.clipboardData.getData('text/plain');
     document.execCommand('insertText', false, text);
-    setTimeout(updateCursor, 0);
+    // Place caret at end after paste
+    setTimeout(() => {
+      placeCaretAtEnd(termIn);
+    }, 0);
   });
   
   // Command submission
@@ -786,7 +749,6 @@ function initTerminal() {
         appState.terminalHistoryIndex = -1;
         setTimeout(() => {
           focusInput();
-          updateCursor();
         }, 0);
       }
     } else if (e.key === 'ArrowUp') {
@@ -798,7 +760,9 @@ function initTerminal() {
           appState.terminalHistoryIndex--;
         }
         setInputText(appState.terminalHistory[appState.terminalHistoryIndex] || '');
-        setTimeout(updateCursor, 0);
+        setTimeout(() => {
+          placeCaretAtEnd(termIn);
+        }, 0);
       }
     } else if (e.key === 'ArrowDown') {
       e.preventDefault();
@@ -810,7 +774,9 @@ function initTerminal() {
           appState.terminalHistoryIndex = -1;
           setInputText('');
         }
-        setTimeout(updateCursor, 0);
+        setTimeout(() => {
+          placeCaretAtEnd(termIn);
+        }, 0);
       }
     } else if (e.key === 'Tab') {
       e.preventDefault();
@@ -820,43 +786,15 @@ function initTerminal() {
       const matches = commands.filter(cmd => cmd.startsWith(value));
       if (matches.length === 1) {
         setInputText(matches[0] + ' ');
-        setTimeout(updateCursor, 0);
+        setTimeout(() => {
+          placeCaretAtEnd(termIn);
+        }, 0);
       } else if (matches.length > 1 && value) {
         addLog('Possible commands: ' + matches.join(', '), 'system');
       }
-    } else {
-      // For all other keys, update cursor position after
-      setTimeout(updateCursor, 0);
     }
-  });
-  
-  // Update cursor on any input change
-  termIn.addEventListener('input', () => {
-    setTimeout(updateCursor, 0);
-  });
-  
-  // Update cursor on selection change (arrow keys, clicks, etc.)
-  document.addEventListener('selectionchange', () => {
-    if (document.activeElement === termIn) {
-      setTimeout(updateCursor, 10);
-    }
-  });
-  
-  // Update cursor on focus/blur
-  termIn.addEventListener('focus', () => {
-    setTimeout(updateCursor, 0);
-  });
-  
-  termIn.addEventListener('blur', () => {
-    const cursorEl = document.querySelector('.terminal-cursor');
-    if (cursorEl) {
-      cursorEl.style.opacity = '0';
-    }
-  });
-  
-  // Also update cursor on click within input
-  termIn.addEventListener('click', () => {
-    setTimeout(updateCursor, 0);
+    // For all other keys, browser's native caret will handle positioning
+    // No need to manually update cursor position
   });
 }
 

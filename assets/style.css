@@ -279,8 +279,7 @@ h2, h3 {
   align-items: center;
   padding: 0.75rem 1rem;
   min-height: 44px;
-  gap: 0;
-  position: relative;
+  gap: 0.25rem;
 }
 
 .terminal-prompt {
@@ -289,7 +288,6 @@ h2, h3 {
   user-select: none;
   pointer-events: none;
   flex-shrink: 0;
-  margin-right: 0;
 }
 
 .terminal-input {
@@ -303,12 +301,9 @@ h2, h3 {
   min-width: 1ch;
   padding: 0;
   margin: 0;
-  margin-left: 0;
   box-shadow: none !important;
-  /* Hide browser's native caret - we use custom cursor instead */
+  /* 默认隐藏原生 caret，显示装饰光标 */
   caret-color: transparent;
-  position: relative;
-  display: inline-block;
 }
 
 .terminal-input:focus {
@@ -329,37 +324,30 @@ h2, h3 {
   box-shadow: none;
 }
 
+/* 装饰光标：默认显示（未聚焦时） */
 .terminal-cursor {
-  width: 1ch;
+  display: inline-block;
+  width: 0.9ch;
   height: 1em;
   background: var(--color-green);
-  margin: 0;
-  margin-left: 0;
+  margin-left: 0.2ch;
   flex-shrink: 0;
-  display: inline-block;
   vertical-align: baseline;
   animation: terminal-blink 1s steps(1) infinite;
-  /* Hidden by default, shown via JS when focused */
-  opacity: 0;
   pointer-events: none;
-  position: relative;
-  /* Ensure cursor appears after prompt (left side) */
-  order: 1;
 }
 
-/* Show cursor when input line is focused */
+/* 关键: 只要输入框 focus, 就隐藏装饰光标并显示原生 caret */
 .terminal-input-line:focus-within .terminal-cursor {
-  opacity: 1;
+  display: none;
 }
 
-/* When input has content, cursor will be positioned dynamically by JS */
-.terminal-input {
-  order: 2;
+.terminal-input-line:focus-within .terminal-input {
+  caret-color: var(--color-green);
 }
 
 @keyframes terminal-blink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0; }
+  50% { opacity: 0; }
 }
 
 .terminal-hint {
