@@ -37,8 +37,20 @@
 
   // Get translation
   function t(key, vars = {}) {
-    if (!window.t) return key;
-    let str = window.t(key, window.currentLang || 'en');
+    if (!key) return '';
+    // Use window.t if available, otherwise try I18N directly
+    let str = '';
+    if (window.t && typeof window.t === 'function') {
+      str = window.t(key, window.currentLang || 'en');
+    } else if (window.I18N) {
+      const lang = window.currentLang || 'en';
+      const dict = window.I18N[lang] || window.I18N.en || {};
+      str = dict[key] ?? key;
+    } else {
+      // Fallback: return key if no i18n system available
+      return key;
+    }
+    // Replace placeholders if vars provided
     if (vars && Object.keys(vars).length > 0) {
       str = str.replace(/\{(\w+)\}/g, (match, k) => vars[k] !== undefined ? vars[k] : match);
     }
@@ -517,13 +529,29 @@
             text = `${t('g.susfarm.market.log.sold')} ${entry.data.count} × ${t(window.SUSFARM_DATA?.goods[entry.data.good]?.nameKey || '')} for ${entry.data.profit} 💰`;
             break;
           case 'event':
-            text = `${t('g.susfarm.market.log.surge')}: ${entry.data.event}`;
+            // entry.data.event is an event ID like 'surge', 'crash', 'freeze', etc.
+            const eventId = entry.data.event || '';
+            const eventDef = window.SUSFARM_DATA?.marketEvents?.[eventId];
+            if (eventDef && eventDef.headlineKey) {
+              // Use the event's headline key for translation
+              text = t(eventDef.headlineKey);
+            } else {
+              // Fallback: try log key format, otherwise use event ID
+              const eventLogKey = `g.susfarm.market.log.${eventId}`;
+              const eventLogText = t(eventLogKey);
+              text = eventLogText !== eventLogKey ? eventLogText : eventId;
+            }
             break;
           case 'insider_boost':
-            text = `${t('g.susfarm.market.log.insider')}: ${entry.data.good}`;
+          case 'insider_taunt':
+            const goodName = entry.data.good ? t(window.SUSFARM_DATA?.goods[entry.data.good]?.nameKey || '') : '';
+            text = `${t('g.susfarm.market.log.insider')}: ${goodName}`;
             break;
           case 'anomaly':
-            text = `${t('g.susfarm.market.log.anomaly')}: ${entry.data.id}`;
+            // entry.data.id is an anomaly ID like 'blessing_overflow', 'corruption_bloom', etc.
+            const anomalyId = entry.data.id || '';
+            const anomalyKey = `g.susfarm.anomaly.${anomalyId}.headline`;
+            text = `${t('g.susfarm.market.log.anomaly')}: ${t(anomalyKey) || anomalyId}`;
             break;
           default:
             text = JSON.stringify(entry.data);
