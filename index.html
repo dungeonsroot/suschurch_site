@@ -64,13 +64,15 @@
     <!-- TERMINAL Section -->
     <section id="terminal" class="terminal-box terminal">
       <h3 data-i18n="g.term.title">[TERMINAL]</h3>
-      <div id="termOut" class="terminal-output" role="log" aria-live="polite" aria-label="Terminal output"></div>
-      <div class="terminal-input-row">
-        <span class="terminal-prompt" data-i18n="g.term.prompt">SUS></span>
-        <input type="text" id="termIn" class="terminal-input" autocomplete="off" 
-               data-i18n-placeholder="g.term.input.placeholder" placeholder="Enter command..."/>
+      <div class="terminal-container">
+        <div id="termOut" class="terminal-output" role="log" aria-live="polite" aria-label="Terminal output"></div>
+        <div class="terminal-divider"></div>
+        <div class="terminal-input-line">
+          <span class="terminal-prompt" data-i18n="g.term.prompt">SUS&gt;</span>
+          <span id="termIn" class="terminal-input" contenteditable="true" autocomplete="off"></span>
+          <span class="terminal-cursor"></span>
+        </div>
       </div>
-      <div id="termHint" class="terminal-hint" data-i18n="g.term.hint">Type "help" for commands</div>
     </section>
     
     <h1>[ CALL::SUS ]</h1>

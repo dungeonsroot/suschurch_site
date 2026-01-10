@@ -148,17 +148,20 @@ h2, h3 {
   margin: 2rem 0;
 }
 
-.terminal-output {
+.terminal-container {
   background: rgba(0, 0, 0, 0.8);
   border: 1px solid var(--color-green);
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.terminal-output {
   padding: 1rem;
   min-height: 200px;
   max-height: 400px;
   overflow-y: auto;
-  font-family: 'Courier New', monospace;
-  font-size: 0.9rem;
-  line-height: 1.5;
-  margin-bottom: 0.5rem;
+  color: var(--color-text);
 }
 
 .terminal-output:empty::before {
@@ -188,11 +191,18 @@ h2, h3 {
   color: #888;
 }
 
-.terminal-input-row {
+.terminal-divider {
+  border-top: 1px solid var(--color-green);
+  margin: 0;
+  padding: 0;
+}
+
+.terminal-input-line {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
+  padding: 0.75rem 1rem;
+  min-height: 44px;
+  gap: 0.25rem;
 }
 
 .terminal-prompt {
@@ -200,36 +210,48 @@ h2, h3 {
   font-family: monospace;
   user-select: none;
   pointer-events: none;
-}
-
-.terminal-prompt:focus,
-.terminal-prompt:focus-visible {
-  outline: none;
-  border: none;
+  flex-shrink: 0;
 }
 
 .terminal-input {
   flex: 1;
-  background: rgba(0, 0, 0, 0.8);
+  outline: none;
+  border: none;
+  background: transparent;
   color: var(--color-green);
-  border: 1px solid var(--color-green);
-  padding: 0.5rem;
   font-family: monospace;
   font-size: 0.9rem;
-  min-height: 44px;
+  min-width: 1ch;
+  padding: 0;
+  margin: 0;
 }
 
-.terminal-input:focus,
+.terminal-input:focus {
+  outline: none;
+  border: none;
+}
+
 .terminal-input:focus-visible {
   outline: none;
-  border: 1px solid var(--color-green);
+  border: none;
+}
+
+.terminal-cursor {
+  width: 8px;
+  height: 1em;
+  background: var(--color-green);
+  margin-left: 2px;
+  flex-shrink: 0;
+  animation: terminal-blink 1s steps(1) infinite;
+}
+
+@keyframes terminal-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
 }
 
 .terminal-hint {
-  font-size: 0.8rem;
-  color: #666;
-  margin-top: 0.25rem;
-  padding-left: 1rem;
+  display: none;
 }
 
 /* Glitch effect */

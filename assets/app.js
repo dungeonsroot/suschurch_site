@@ -662,18 +662,66 @@ function initTerminal() {
   
   if (!termIn || !termOut) return;
   
+  // Helper: Get text content from contenteditable
+  function getInputText() {
+    return termIn.textContent || '';
+  }
+  
+  // Helper: Set text content and move cursor to end
+  function setInputText(text) {
+    termIn.textContent = text;
+    // Move cursor to end
+    const range = document.createRange();
+    const selection = window.getSelection();
+    range.selectNodeContents(termIn);
+    range.collapse(false);
+    selection.removeAllRanges();
+    selection.addRange(range);
+  }
+  
+  // Helper: Focus and place cursor at end
+  function focusInput() {
+    termIn.focus();
+    const range = document.createRange();
+    const selection = window.getSelection();
+    range.selectNodeContents(termIn);
+    range.collapse(false);
+    selection.removeAllRanges();
+    selection.addRange(range);
+  }
+  
+  // Click anywhere on terminal to focus input
+  const terminalContainer = termIn.closest('.terminal-container');
+  if (terminalContainer) {
+    terminalContainer.addEventListener('click', (e) => {
+      if (e.target !== termIn && !termIn.contains(e.target)) {
+        focusInput();
+      }
+    });
+  }
+  
   // Initial welcome message
   addLog(t('terminal.welcome'), 'system');
+  
+  // Auto-focus on load
+  setTimeout(() => focusInput(), 100);
+  
+  // Paste handler: paste as plain text only
+  termIn.addEventListener('paste', (e) => {
+    e.preventDefault();
+    const text = e.clipboardData.getData('text/plain');
+    document.execCommand('insertText', false, text);
+  });
   
   // Command submission
   termIn.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      const cmd = termIn.value.trim();
+      const cmd = getInputText().trim();
       if (cmd) {
         addLog(`${t('terminal.prompt')} ${cmd}`, 'prompt');
         processCommand(cmd);
-        termIn.value = '';
+        setInputText('');
         appState.terminalHistoryIndex = -1;
       }
     } else if (e.key === 'ArrowUp') {
@@ -684,51 +732,45 @@ function initTerminal() {
         } else if (appState.terminalHistoryIndex > 0) {
           appState.terminalHistoryIndex--;
         }
-        termIn.value = appState.terminalHistory[appState.terminalHistoryIndex] || '';
+        setInputText(appState.terminalHistory[appState.terminalHistoryIndex] || '');
       }
     } else if (e.key === 'ArrowDown') {
       e.preventDefault();
       if (appState.terminalHistoryIndex !== -1) {
         if (appState.terminalHistoryIndex < appState.terminalHistory.length - 1) {
           appState.terminalHistoryIndex++;
-          termIn.value = appState.terminalHistory[appState.terminalHistoryIndex];
+          setInputText(appState.terminalHistory[appState.terminalHistoryIndex]);
         } else {
           appState.terminalHistoryIndex = -1;
-          termIn.value = '';
+          setInputText('');
         }
       }
     } else if (e.key === 'Tab') {
       e.preventDefault();
       // Simple autocomplete
-      const value = termIn.value.trim().toLowerCase();
+      const value = getInputText().trim().toLowerCase();
       const commands = ['help', 'about', 'lang', 'baptize', 'seal', 'bless', 'donate', 'copy', 'balance', 'earn', 'shop', 'buy', 'confess', 'list', 'del', 'wipe', 'glitch', 'export', 'clear'];
       const matches = commands.filter(cmd => cmd.startsWith(value));
       if (matches.length === 1) {
-        termIn.value = matches[0] + ' ';
+        setInputText(matches[0] + ' ');
       } else if (matches.length > 1 && value) {
         addLog('Possible commands: ' + matches.join(', '), 'system');
       }
     }
   });
   
-  // Update hint
-  const hintEl = document.getElementById('termHint');
-  if (hintEl) {
-    termIn.addEventListener('input', () => {
-      const value = termIn.value.trim().toLowerCase();
-      if (value) {
-        const commands = ['help', 'about', 'lang', 'baptize', 'seal', 'bless', 'donate', 'copy', 'balance', 'earn', 'shop', 'buy', 'confess', 'list', 'del', 'wipe', 'glitch', 'export', 'clear'];
-        const matches = commands.filter(cmd => cmd.startsWith(value));
-        if (matches.length > 0) {
-          hintEl.textContent = tReplace('Try: {cmd}', { cmd: matches[0] });
-        } else {
-          hintEl.textContent = t('terminal.hint');
-        }
-      } else {
-        hintEl.textContent = t('terminal.hint');
-      }
-    });
-  }
+  // Keep cursor at end on input
+  termIn.addEventListener('input', () => {
+    // Move cursor to end after any input change
+    setTimeout(() => {
+      const range = document.createRange();
+      const selection = window.getSelection();
+      range.selectNodeContents(termIn);
+      range.collapse(false);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }, 0);
+  });
 }
 
 // Baptism button handler
