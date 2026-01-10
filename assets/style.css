@@ -9,6 +9,15 @@
   --color-red: #ff0000;
   --color-bg: #000000;
   --color-text: #00ff00;
+  
+  /* Background scale variables */
+  --bg-scale-desktop: 1600px;
+  --bg-scale-mobile: 900px;
+}
+
+/* Base */
+html, body {
+  height: 100%;
 }
 
 /* Safe area insets for mobile */
@@ -22,15 +31,74 @@ body {
   padding-bottom: env(safe-area-inset-bottom);
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-right);
-  background-image: url('../fractal.webp');
-  background-size: cover;
-  background-attachment: fixed;
-  background-position: center;
   min-height: 100vh;
   position: relative;
 }
 
-/* Removed gray overlay - background shows directly */
+/* Fractal overlay layer (fixed, GPU-optimized) */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  
+  /* IMPORTANT: DO NOT use cover - use fixed width with no-repeat for stable scaling */
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: var(--bg-scale-desktop) auto;
+  
+  /* Desktop assets with image-set for DPR selection */
+  background-image: image-set(
+    url("/assets/bg/fractal-desktop-1x.avif") 1x type("image/avif"),
+    url("/assets/bg/fractal-desktop-2x.avif") 2x type("image/avif"),
+    url("/assets/bg/fractal-desktop-3x.avif") 3x type("image/avif"),
+    url("/assets/bg/fractal-desktop-1x.webp") 1x type("image/webp"),
+    url("/assets/bg/fractal-desktop-2x.webp") 2x type("image/webp"),
+    url("/assets/bg/fractal-desktop-3x.webp") 3x type("image/webp"),
+    /* Fallback to original if mobile assets not generated yet */
+    url("/fractal.webp") 1x type("image/webp")
+  );
+  
+  /* Slightly soften for readability without becoming blurry */
+  opacity: 0.95;
+  
+  /* Prevent GPU downscaling artifacts */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Mobile: switch to mobile assets + fixed scale */
+@media (max-width: 768px) {
+  body::before {
+    background-size: var(--bg-scale-mobile) auto;
+    background-image: image-set(
+      url("/assets/bg/fractal-mobile-1x.avif") 1x type("image/avif"),
+      url("/assets/bg/fractal-mobile-2x.avif") 2x type("image/avif"),
+      url("/assets/bg/fractal-mobile-3x.avif") 3x type("image/avif"),
+      url("/assets/bg/fractal-mobile-1x.webp") 1x type("image/webp"),
+      url("/assets/bg/fractal-mobile-2x.webp") 2x type("image/webp"),
+      url("/assets/bg/fractal-mobile-3x.webp") 3x type("image/webp"),
+      /* Fallback to original if mobile assets not generated yet */
+      url("/fractal.webp") 1x type("image/webp")
+    );
+  }
+}
+
+/* High DPR devices: use larger scale for sharper rendering */
+@media (min-resolution: 2dppx) {
+  body::before {
+    background-size: calc(var(--bg-scale-desktop) * 1.5) auto;
+  }
+}
+
+@media (max-width: 768px) and (min-resolution: 2dppx) {
+  body::before {
+    background-size: calc(var(--bg-scale-mobile) * 1.5) auto;
+  }
+}
 
 /* Header */
 header {
