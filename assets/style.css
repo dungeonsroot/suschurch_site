@@ -87,18 +87,6 @@ body::before {
   }
 }
 
-/* High DPR devices: use larger scale for sharper rendering */
-@media (min-resolution: 2dppx) {
-  body::before {
-    background-size: calc(var(--bg-scale-desktop) * 1.5) auto;
-  }
-}
-
-@media (max-width: 768px) and (min-resolution: 2dppx) {
-  body::before {
-    background-size: calc(var(--bg-scale-mobile) * 1.5) auto;
-  }
-}
 
 /* Header */
 header {
